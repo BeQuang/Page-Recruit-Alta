@@ -1,0 +1,41 @@
+:root {
+  --primary-color: #f26d21;
+  --primary-hover-color: #f7894b;
+  --primary-box-shadow-color: #f26d2180;
+  --padding-layout: 32px;
+}
+
+body {
+  font-family: "Roboto", sans-serif !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700 !important;
+}
+
+.form-check {
+  .form-check-input[type="checkbox"] {
+    border: 1px solid var(--primary-color);
+  }
+
+  .form-check-input {
+    &:checked {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+  }
+}
+
+.form-control,
+.form-select,
+.form-check-input {
+  &:focus {
+    box-shadow: 0 0 0 0.25rem var(--primary-box-shadow-color) !important;
+    border-color: var(--primary-color) !important;
+  }
+}
