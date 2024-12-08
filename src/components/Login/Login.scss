@@ -26,6 +26,14 @@
     color: var(--primary-color);
   }
 
+  .is-error {
+    border: 1px solid #dc3545 !important;
+  }
+
+  .error-text {
+    font-size: small;
+  }
+
   .custom-select {
     option {
       &:hover {
@@ -38,15 +46,30 @@
   .forgot-pass {
     color: var(--primary-color);
     text-decoration: underline;
+    cursor: pointer;
   }
 
   .btn-login {
     width: 100%;
     background-color: var(--primary-color);
     border: 1px solid var(--primary-color);
+    color: white;
 
     &:hover {
       background-color: var(--primary-hover-color);
+      border: 1px solid var(--primary-hover-color);
+      color: white;
+    }
+
+    &:focus-visible {
+      background-color: var(--primary-hover-color);
+      border: 1px solid var(--primary-hover-color);
+    }
+  }
+
+  .btn {
+    &:disabled {
+      background-color: var(--primary-color);
       border: 1px solid var(--primary-hover-color);
     }
   }

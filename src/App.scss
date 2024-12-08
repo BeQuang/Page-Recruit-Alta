@@ -2,11 +2,13 @@
   --primary-color: #f26d21;
   --primary-hover-color: #f7894b;
   --primary-box-shadow-color: #f26d2180;
+  --text-color: #959595;
   --padding-layout: 32px;
 }
 
 body {
   font-family: "Roboto", sans-serif !important;
+  background-color: #f1f3f5 !important;
 }
 
 h1,
@@ -34,6 +36,8 @@ h6 {
 .form-control,
 .form-select,
 .form-check-input {
+  border: transparent !important;
+
   &:focus {
     box-shadow: 0 0 0 0.25rem var(--primary-box-shadow-color) !important;
     border-color: var(--primary-color) !important;

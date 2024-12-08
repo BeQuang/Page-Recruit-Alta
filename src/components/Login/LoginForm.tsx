@@ -1,7 +1,54 @@
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Dropdown from "../Dropdown/Dropdown";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useEffect, useState } from "react";
+import { CgDanger } from "react-icons/cg";
+import { Option } from "../../Types/login";
+import { validLogin } from "../Validate/Validate";
 
 function LoginForm() {
+  const dataOptions = [
+    { text: "TP.HCM" },
+    { text: "Hà Nội" },
+    { text: "Đà N��ng" },
+    { text: "Cần Thơ" },
+    { text: "Hồ Chí Minh" },
+    { text: "An Giang" },
+    { text: "Bắc Giang" },
+    { text: "Bắc Kạn" },
+    { text: "Bắc Ninh" },
+    { text: "Bến Tre" },
+  ];
+
+  useEffect(() => {
+    setListOptions(dataOptions);
+  }, []);
+
+  const [captchaValue, setCaptchaValue] = useState<string | null>("");
+  const [errorInput, setErrorInput] = useState<boolean>(false);
+  const [listOptions, setListOptions] = useState<Option[]>([]);
+
+  const [type, setType] = useState<string | null>("");
+  const [email, setEmail] = useState<string | null>("");
+  const [password, setPassword] = useState<string | null>("");
+  const [rememberPass, setRememberPass] = useState<boolean>(false);
+
+  const onChangeCaptcha = (value: string | null) => {
+    setCaptchaValue(value);
+    console.log("Captcha value >>>> ", captchaValue);
+  };
+
+  const handleLogin = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const checkValidInput = validLogin({ email, password });
+    if (checkValidInput) {
+      setErrorInput(false);
+    } else {
+      setErrorInput(true);
+    }
+  };
+
   return (
     <div className="container-login-form">
       <h3 className="mb-3 title">Đăng nhập</h3>
@@ -10,39 +57,61 @@ function LoginForm() {
           <Form.Label>
             Vai trò<span className="text-danger">*</span>
           </Form.Label>
-          <Form.Select className="custom-select">
-            <option>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </Form.Select>
+          <Dropdown listOptions={listOptions} setType={setType} />
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>
             Email<span className="text-danger">*</span>
           </Form.Label>
-          <Form.Control type="email" placeholder="Tên đăng nhập" />
+          <Form.Control
+            type="email"
+            placeholder="Tên đăng nhập"
+            className={errorInput ? "is-error" : ""}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>
             Mật khẩu<span className="text-danger">*</span>
           </Form.Label>
-          <Form.Control type="password" placeholder="Nhập mật khẩu" />
+          <Form.Control
+            type="password"
+            placeholder="Nhập mật khẩu"
+            className={errorInput ? "is-error" : ""}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Form.Group>
-
+        {errorInput ? (
+          <div className="text-danger d-flex mb-3 error-text">
+            <div className="icon-danger me-2">
+              <CgDanger />
+            </div>
+            <span>Sai tên đăng nhập hoặc mật khẩu.</span>
+          </div>
+        ) : null}
         <Form.Group
           className="mb-3 d-flex justify-content-between"
           controlId="formBasicCheckbox"
         >
-          <Form.Check type="checkbox" label="Ghi nhớ mật khẩu" />
+          <Form.Check
+            type="checkbox"
+            label="Ghi nhớ mật khẩu"
+            onChange={() => setRememberPass(!rememberPass)}
+          />
           <span className="forgot-pass">Quên mật khẩu?</span>
         </Form.Group>
-
-        <Button variant="primary" type="submit" className="btn-login">
+        <ReCAPTCHA
+          sitekey="6LfiC5YqAAAAAMXf5M7DGHZsid4HA8Fr4iFbTDVY"
+          onChange={onChangeCaptcha}
+        />
+        ,
+        <button
+          className="btn btn-login"
+          disabled={!captchaValue}
+          onClick={(event) => handleLogin(event)}
+        >
           Đăng nhập
-        </Button>
+        </button>
       </Form>
     </div>
   );

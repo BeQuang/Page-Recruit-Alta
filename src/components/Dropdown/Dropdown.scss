@@ -1,0 +1,113 @@
+.dropdown-container {
+  color: var(--text-color);
+  position: relative;
+  cursor: pointer;
+
+  .search {
+    position: relative;
+    background: white;
+    border-radius: 0.375rem;
+    border: 1px solid transparent;
+
+    &.focus {
+      border: 1px solid var(--primary-color);
+      border-radius: 0.375rem;
+    }
+
+    .title {
+      padding: 0.375rem 0.75rem;
+      margin: 0;
+    }
+
+    .icon {
+      position: absolute;
+      top: 0%;
+      right: 2%;
+      font-size: 24px;
+      color: var(--primary-color);
+    }
+
+    .icon-down {
+      animation: rotateDown 0.3s ease-out forwards;
+    }
+
+    .icon-up {
+      animation: rotateUp 0.3s ease-out forwards;
+    }
+
+    @keyframes rotateUp {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(-180deg);
+      }
+    }
+
+    @keyframes rotateDown {
+      from {
+        transform: rotate(-180deg);
+      }
+      to {
+        transform: rotate(0deg);
+      }
+    }
+  }
+
+  .content {
+    background-color: white;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    max-height: 200px;
+    width: 100%;
+    overflow-y: auto;
+    position: absolute;
+    z-index: 10;
+
+    /* Tùy chỉnh thanh cuộn (nếu muốn) */
+    &::-webkit-scrollbar {
+      width: 8px; /* Độ rộng thanh cuộn */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1; /* Màu nền track */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--primary-color); /* Màu thanh cuộn */
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555; /* Màu khi hover thanh cuộn */
+    }
+
+    .item {
+      padding: 0.375rem 2.5% 0.375rem 0.75rem;
+      position: relative;
+
+      .icon-check {
+        display: none;
+      }
+
+      &:hover {
+        background-color: #e8e8e8;
+        color: var(--primary-color);
+
+        .icon-check {
+          display: block;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0.05rem;
+          top: 0;
+          bottom: 0;
+          width: 3px;
+          background-color: var(--primary-color);
+        }
+      }
+    }
+  }
+}
