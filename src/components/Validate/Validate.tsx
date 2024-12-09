@@ -3,10 +3,11 @@ interface ValidLoginProps {
   password?: string | null;
 }
 
-const validLogin = ({ email, password }: ValidLoginProps) => {
-  if (email !== "admin" || password !== "1") {
+const validLogin = async ({ email, password }: ValidLoginProps) => {
+  if (email === "" || password === "") {
     return false;
-  } else return true;
+  }
+  return true;
 };
 
 export { validLogin };

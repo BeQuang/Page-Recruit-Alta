@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { CgDanger } from "react-icons/cg";
 import { Option } from "../../Types/login";
 import { validLogin } from "../Validate/Validate";
+import { createOrUpdateUser } from "../../firebase/controller";
 
 function LoginForm() {
   const dataOptions = [
@@ -24,7 +25,7 @@ function LoginForm() {
     setListOptions(dataOptions);
   }, []);
 
-  const [captchaValue, setCaptchaValue] = useState<string | null>("");
+  const [captchaValue, setCaptchaValue] = useState<boolean>(false);
   const [errorInput, setErrorInput] = useState<boolean>(false);
   const [listOptions, setListOptions] = useState<Option[]>([]);
 
@@ -34,16 +35,27 @@ function LoginForm() {
   const [rememberPass, setRememberPass] = useState<boolean>(false);
 
   const onChangeCaptcha = (value: string | null) => {
-    setCaptchaValue(value);
+    setCaptchaValue(true);
     console.log("Captcha value >>>> ", captchaValue);
   };
 
-  const handleLogin = (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const checkValidInput = validLogin({ email, password });
+    const checkValidInput = await validLogin({ email, password });
+
     if (checkValidInput) {
       setErrorInput(false);
+
+      const res = await createOrUpdateUser({
+        email,
+        password,
+        option: type,
+        remember: rememberPass,
+        captcha: captchaValue,
+      });
+
+      console.log(res);
     } else {
       setErrorInput(true);
     }
