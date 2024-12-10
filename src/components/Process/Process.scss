@@ -1,0 +1,97 @@
+.process-container {
+  margin-top: 64px;
+
+  .title {
+    span {
+      color: var(--primary-color);
+      text-transform: uppercase;
+    }
+  }
+
+  form {
+    width: 40%;
+
+    .description {
+      width: 100%;
+      border: transparent;
+      padding: 8px;
+      border-radius: 4px;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.25rem var(--primary-box-shadow-color) !important;
+        border-color: var(--primary-color) !important;
+      }
+    }
+  }
+
+  .btn-submit {
+    background: var(--primary-color);
+    color: white;
+    min-width: 100px;
+
+    &:hover {
+      background-color: var(--primary-hover-color) !important;
+      border: 1px solid var(--primary-hover-color);
+      color: white;
+    }
+
+    span {
+      padding-right: 6px;
+    }
+  }
+}
+
+.modal-process-container {
+  .modal-content {
+    min-height: 300px;
+  }
+
+  .icon-close {
+    position: absolute;
+    top: 6px;
+    right: 18px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .modal-body {
+    margin: 18px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h2 {
+      color: var(--primary-color);
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-color);
+    }
+
+    .btn-closed {
+      background-color: #999898;
+      border: 1px solid #999898;
+      margin-top: 1rem;
+
+      &:hover {
+        background-color: #ccc;
+        border: 1px solid #ccc;
+      }
+    }
+  }
+
+  .notice1 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .notice2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
