@@ -9,6 +9,23 @@
     border-radius: 0.375rem;
     border: 1px solid transparent;
 
+    &.size-large {
+      padding: 12px 10px;
+
+      .icon {
+        position: absolute;
+        top: 20%;
+        right: 2%;
+        font-size: 24px;
+        color: var(--primary-color);
+      }
+
+      &.focus {
+        border: transparent;
+        border-radius: 0.375rem;
+      }
+    }
+
     &.focus {
       border: 1px solid var(--primary-color);
       border-radius: 0.375rem;

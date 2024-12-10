@@ -11,9 +11,10 @@ interface DropdownProps {
   value?: string;
   listOptions: Option[];
   setType: (value: string) => void;
+  size?: string;
 }
 
-function Dropdown({ value, listOptions, setType }: DropdownProps) {
+function Dropdown({ value, listOptions, setType, size }: DropdownProps) {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [option, setOption] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,9 @@ function Dropdown({ value, listOptions, setType }: DropdownProps) {
   return (
     <div className="dropdown-container" ref={dropdownRef}>
       <div
-        className={isFocus ? "search focus" : "search"}
+        className={`${isFocus ? "search focus" : "search"} ${
+          size === "large" ? "size-large" : ""
+        }`}
         onClick={() => setIsFocus(!isFocus)}
       >
         <p className="title">
