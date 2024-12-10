@@ -2,7 +2,7 @@ import React from "react";
 import "./Login.scss";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
 import logoLogin from "../../assets/images/Logo-login.svg";
-import LoginForm from "./LoginForm";
+import { Outlet } from "react-router-dom";
 
 function Login() {
   return (
@@ -17,8 +17,8 @@ function Login() {
         </div>
 
         <div className="body d-flex align-items-center">
-          <div className="col-6">
-            <LoginForm />
+          <div className="col-6 child-outlet">
+            <Outlet />
           </div>
           <img src={logoLogin} alt="logo" className="col-6" />
         </div>

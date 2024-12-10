@@ -1,0 +1,41 @@
+.forgot-pass-container,
+.reset-pass-container {
+  position: relative;
+  min-width: 80%;
+
+  h4 {
+    color: var(--primary-color);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .btn-forgot-pass {
+    width: 100%;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: white;
+    margin-bottom: 1rem;
+
+    &:hover {
+      background-color: var(--primary-hover-color);
+      border: 1px solid var(--primary-hover-color);
+      color: white;
+    }
+  }
+
+  .is-error {
+    border: 1px solid #dc3545 !important;
+  }
+
+  .error-text {
+    font-size: small;
+  }
+
+  .back {
+    position: absolute;
+    right: 0;
+    color: var(--primary-color);
+  }
+}
