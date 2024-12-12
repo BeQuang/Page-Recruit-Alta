@@ -7,24 +7,34 @@ import {
   addDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { app } from "./firebase";
 import { User } from "../Types/login";
 
 export const firestore = getFirestore(app);
 const usersCollection = collection(firestore, "user");
+const informationCollection = collection(firestore, "information");
+
+interface DataReturn {
+  EM: string;
+  EC: number;
+  DT: string;
+}
 
 // Hàm tạo hoặc cập nhật user
-export const createOrUpdateUser = async (user: User): Promise<string> => {
+export const createOrUpdateUser = async (user: User): Promise<DataReturn> => {
   try {
     // Kiểm tra xem email đã tồn tại chưa
     const q = query(usersCollection, where("email", "==", user.email));
     const querySnapshot = await getDocs(q);
+    let dataReturn: DataReturn;
 
     if (querySnapshot.empty) {
       // Email chưa tồn tại -> Tạo mới
       await addDoc(usersCollection, user);
-      return `CREATE`;
+      dataReturn = { EM: "CREATE", EC: 0, DT: "User created successfully." };
+      return dataReturn;
     } else {
       // Email đã tồn tại -> Kiểm tra password
       const existingUser = querySnapshot.docs[0];
@@ -39,9 +49,11 @@ export const createOrUpdateUser = async (user: User): Promise<string> => {
           captcha: user.captcha,
         });
 
-        return `UPDATE`;
+        dataReturn = { EM: "UPDATE", EC: 0, DT: existingUser.id };
+        return dataReturn;
       } else {
-        return "ERROR";
+        dataReturn = { EM: "ERROR", EC: 0, DT: "" };
+        return dataReturn;
       }
     }
   } catch (error: any) {
@@ -92,5 +104,22 @@ export const changePassword = async ({
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getUserInformation = async (userId: string) => {
+  const docRef = doc(informationCollection, userId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const userData = docSnap.data();
+    return {
+      id: userId,
+      name: userData.name,
+      avatarUrl: userData.avatar,
+    };
+  } else {
+    console.log("No such document!");
+    return null;
   }
 };

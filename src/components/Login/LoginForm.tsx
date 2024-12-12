@@ -6,10 +6,16 @@ import { useEffect, useState, useRef } from "react";
 import { CgDanger } from "react-icons/cg";
 import { Option } from "../../Types/login";
 import { validLogin } from "../Validate/Validate";
-import { createOrUpdateUser } from "../../firebase/controller";
+import {
+  createOrUpdateUser,
+  getUserInformation,
+} from "../../firebase/userController";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ModalSuccess from "./ModalSuccess";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/user.slice";
+import { preProcessingImage } from "../PreProcessingImage/PreProcessingImage";
 
 function LoginForm() {
   const dataOptions = [
@@ -30,6 +36,8 @@ function LoginForm() {
   }, []);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   const [captchaValue, setCaptchaValue] = useState<boolean>(false);
@@ -76,17 +84,23 @@ function LoginForm() {
         captcha: captchaValue,
       });
 
-      if (res === "CREATE") {
+      if (res.EM === "CREATE") {
         setIsModalSuccess(true);
         resetData();
-      } else if (res === "UPDATE") {
+      } else if (res.EM === "UPDATE") {
+        const userInfo = await getUserInformation(res.DT);
+
+        const linkImageConvert = preProcessingImage(userInfo?.avatarUrl);
+
+        const dataRedux = { ...userInfo, avatarUrl: linkImageConvert };
+        if (dataRedux) {
+          dispatch(setUser(dataRedux));
+        }
+
         navigate("user");
-      } else if (res === "ERROR") {
+      } else if (res.EM === "ERROR") {
         setErrorInput(true);
       }
-
-      console.log(res);
-      console.log(captchaValue);
     } else {
       setErrorInput(true);
     }

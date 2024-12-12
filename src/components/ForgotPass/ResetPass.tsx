@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { CgDanger } from "react-icons/cg";
 import { Link, useLocation } from "react-router-dom";
-import { changePassword } from "../../firebase/controller";
+import { changePassword } from "../../firebase/userController";
 import ModalSuccess from "../Login/ModalSuccess";
 
 function ResetPass() {

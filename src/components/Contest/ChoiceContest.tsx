@@ -5,6 +5,8 @@ import Dropdown from "../Dropdown/Dropdown";
 import { Option } from "../../Types/login";
 import { GoPlus } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 function ChoiceContest() {
   const dataOptions = [
@@ -23,6 +25,10 @@ function ChoiceContest() {
 
   const navigate = useNavigate();
 
+  // Lấy dữ liệu user từ Redux Store
+  const defaultUser = { id: "", name: "", avatarUrl: "" };
+  const user = useSelector((state: RootState) => state.user) || defaultUser;
+
   const handleContest = () => {
     navigate("/user/contest");
   };
@@ -30,7 +36,7 @@ function ChoiceContest() {
   return (
     <div className="choice-contest-container">
       <h3 className="title">
-        Xin chào <span>Thành Quang</span>
+        Xin chào <span>{user?.name}</span>
       </h3>
       <div className="option">
         <div className="dropdown">

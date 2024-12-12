@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import "./ForgotPass.scss";
 import { CgDanger } from "react-icons/cg";
-import { checkEmailExit } from "../../firebase/controller";
+import { checkEmailExit } from "../../firebase/userController";
 import { useNavigate } from "react-router-dom";
 
 function ForgotPass() {

@@ -5,6 +5,8 @@ import Dropdown from "../Dropdown/Dropdown";
 import { Option } from "../../Types/login";
 import { FiSend } from "react-icons/fi";
 import ModalProcess from "./ModalProcess";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 function Process() {
   const dataOptions = [
@@ -24,6 +26,10 @@ function Process() {
     setListOptions(dataOptions);
   }, []);
 
+  // Lấy dữ liệu user từ Redux Store
+  const defaultUser = { id: "", name: "", avatarUrl: "" };
+  const user = useSelector((state: RootState) => state.user) || defaultUser;
+
   const [listOptions, setListOptions] = useState<Option[]>([]);
   const [type, setType] = useState<string>("");
   const [link, setLink] = useState<string>("");
@@ -41,7 +47,7 @@ function Process() {
     <>
       <div className="process-container">
         <h3 className="title">
-          Xin chào <span>Thành Quang</span>
+          Xin chào <span>{user?.name}</span>
         </h3>
         <Form>
           <Form.Group className="mb-3" controlId="formType">

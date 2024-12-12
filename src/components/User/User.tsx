@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
-import metoo from "../../assets/images/metoo.jpg";
 import { RiUserSearchLine } from "react-icons/ri";
 import { FaCircle } from "react-icons/fa";
 import { RiBook2Line } from "react-icons/ri";
 import "./User.scss";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 function User() {
   const [isActionActive, setIsActionActive] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  // Lấy dữ liệu user từ Redux Store
+  const defaultUser = { id: "", name: "", avatarUrl: "" };
+  const user = useSelector((state: RootState) => state.user) || defaultUser;
+  console.log(user);
 
   const handleActionContest = () => {
     setIsActionActive(false);
@@ -58,8 +64,8 @@ function User() {
                 </div>
               </div>
               <div className="avatar">
-                <img src={metoo} alt="metoo" className="img" />
-                <span className="name">Thành Quang</span>
+                <img src={user?.avatarUrl} alt="metoo" className="img" />
+                <span className="name">{user?.name}</span>
               </div>
             </div>
           </div>
