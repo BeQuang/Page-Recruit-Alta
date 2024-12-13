@@ -97,7 +97,7 @@ function LoginForm() {
           dispatch(setUser(dataRedux));
         }
 
-        navigate("user");
+        navigate("/user");
       } else if (res.EM === "ERROR") {
         setErrorInput(true);
       }
