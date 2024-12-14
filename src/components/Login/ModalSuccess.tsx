@@ -11,7 +11,7 @@ interface ModalSuccessProps {
 
 function ModalSuccess({ show, setShow }: ModalSuccessProps) {
   const handleClose = () => {
-    navigate("/");
+    navigate("/login");
     setShow(false);
   };
   const navigate = useNavigate();

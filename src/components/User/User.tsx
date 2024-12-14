@@ -16,7 +16,6 @@ function User() {
   // Lấy dữ liệu user từ Redux Store
   const defaultUser = { id: "", name: "", avatarUrl: "" };
   const user = useSelector((state: RootState) => state.user) || defaultUser;
-  console.log(user);
 
   const handleActionContest = () => {
     setIsActionActive(false);

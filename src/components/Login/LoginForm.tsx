@@ -16,6 +16,8 @@ import ModalSuccess from "./ModalSuccess";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/slices/user.slice";
 import { preProcessingImage } from "../PreProcessingImage/PreProcessingImage";
+import { fetchAllTitles } from "../../firebase/contestController";
+import { setTitleContest } from "../../redux/slices/titleContest.slice";
 
 function LoginForm() {
   const dataOptions = [
@@ -95,6 +97,11 @@ function LoginForm() {
         const dataRedux = { ...userInfo, avatarUrl: linkImageConvert };
         if (dataRedux) {
           dispatch(setUser(dataRedux));
+        }
+
+        const titleContest = await fetchAllTitles();
+        if (titleContest) {
+          dispatch(setTitleContest(titleContest));
         }
 
         navigate("/user");

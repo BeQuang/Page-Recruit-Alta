@@ -9,15 +9,15 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 function ChoiceContest() {
-  const dataOptions = [
-    { text: "Lập trình Front-end" },
-    { text: "Lập trình Back-end" },
-    { text: "VFX Artist" },
-    { text: "UI/UX Design" },
-  ];
+  // Lấy dữ liệu user từ Redux Store
+  const defaultUser = { id: "", name: "", avatarUrl: "" };
+  const user = useSelector((state: RootState) => state.user) || defaultUser;
+
+  const listTitleContest: Option[] =
+    useSelector((state: RootState) => state.titleContest) || [];
 
   useEffect(() => {
-    setListOptions(dataOptions);
+    setListOptions(listTitleContest);
   }, []);
 
   const [listOptions, setListOptions] = useState<Option[]>([]);
@@ -25,12 +25,12 @@ function ChoiceContest() {
 
   const navigate = useNavigate();
 
-  // Lấy dữ liệu user từ Redux Store
-  const defaultUser = { id: "", name: "", avatarUrl: "" };
-  const user = useSelector((state: RootState) => state.user) || defaultUser;
-
   const handleContest = () => {
-    navigate("/user/contest");
+    if (!type) {
+      alert("Vui lòng chọn một đề thi trước khi tiếp tục.");
+      return;
+    }
+    navigate("/user/contest", { state: { title: type } });
   };
 
   return (
