@@ -16,3 +16,9 @@ export interface DataContest {
   fullTime: number;
   listQuestions?: QuestionItem[];
 }
+
+export interface ResultSubmit {
+  type: string;
+  answer?: AnswerItem[];
+  answerText?: string;
+}

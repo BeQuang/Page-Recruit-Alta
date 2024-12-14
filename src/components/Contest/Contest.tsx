@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { MdAccessTime } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import { DataContest } from "../../Types/contest";
 import { fetchContestByTitle } from "../../firebase/contestController";
 import { ThreeCircles } from "react-loader-spinner";
-import { convertMillisecondsToTime } from "../Time/ConvertTime";
+import QuestionOneAnswer from "../QuestionItem/QuestionOneAnswer";
+import Countdown from "../Time/Countdown";
 
 function Contest() {
   const location = useLocation();
   const { title } = location.state || {};
 
   const [dataContest, setDataContest] = useState<DataContest | null>(null);
-  const [questionCurrent, setQuestionCurrent] = useState<number>(1);
+  const [questionCurrent, setQuestionCurrent] = useState<number>(0);
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true); // Thêm state loading
 
@@ -27,7 +27,6 @@ function Contest() {
         setDataContest(contestData);
         setRemainingTime(contestData.fullTime); // Gán fullTime vào remainingTime
         setLoading(false); // Dữ liệu đã được fetch xong, set loading false
-        console.log("Fetched contest:", contestData);
       } catch (error) {
         console.error("Error fetching contest:", error);
         setLoading(false); // Cũng cần set loading false nếu fetch bị lỗi
@@ -64,26 +63,32 @@ function Contest() {
           <h1>Loading data...</h1>
         </div>
       ) : (
-        <header>
-          <div>Đề thi môn</div>
-          <h3 className="title">{title || "Không có loại đề thi được chọn"}</h3>
-          <div className="information">
-            <div className="total">
-              Tổng câu hỏi: <span>{dataContest?.totalQuestions}</span>
-            </div>
-            <div className="finish">
-              Hoàn thành:{" "}
-              <span>{`${questionCurrent}/${dataContest?.totalQuestions}`}</span>
-            </div>
-            <div className="time">
-              <div className="icon">
-                <MdAccessTime />
+        <>
+          <header>
+            <div>Đề thi môn</div>
+            <h3 className="title">
+              {title || "Không có loại đề thi được chọn"}
+            </h3>
+            <div className="information">
+              <div className="total">
+                Tổng câu hỏi: <span>{dataContest?.totalQuestions}</span>
               </div>
-              <div>{convertMillisecondsToTime(remainingTime)}</div>
+              <div className="finish">
+                Hoàn thành:{" "}
+                <span>{`${questionCurrent}/${dataContest?.totalQuestions}`}</span>
+              </div>
+              <Countdown remainingTime={remainingTime} />{" "}
+              {/* Sử dụng Countdown component */}
+              <button className="btn btn-submit">Nộp bài</button>
             </div>
-            <button className="btn btn-submit">Nộp bài</button>
+          </header>
+          <div className="question-container mt-4">
+            <QuestionOneAnswer
+              dataContest={dataContest}
+              currentQuestion={questionCurrent}
+            />
           </div>
-        </header>
+        </>
       )}
     </div>
   );
