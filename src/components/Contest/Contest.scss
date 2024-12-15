@@ -95,4 +95,25 @@
     justify-content: center;
     height: 70vh;
   }
+
+  .question-container {
+    min-height: 36vh;
+  }
+
+  .prev-next {
+    display: flex;
+    font-size: 32px;
+    justify-content: end;
+
+    .prev,
+    .next {
+      color: var(--primary-color) !important;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .prev {
+      margin-right: 16px;
+    }
+  }
 }

@@ -1,19 +1,20 @@
-import { AnswerItem, DataContest } from "../../Types/contest";
+import { AnswerItem, QuestionItem, ResultSubmit } from "../../Types/contest";
 import Form from "react-bootstrap/Form";
-import { useState, memo } from "react";
+import { useState, useEffect } from "react";
 import "./Question.scss";
 
 interface QuestionOneAnswerProps {
-  dataContest: DataContest | null;
+  dataContest: QuestionItem | null;
   currentQuestion: number;
+  setResultSubmit: React.Dispatch<React.SetStateAction<ResultSubmit>>; // Thêm setResultSubmit để cập nhật kết quả
 }
 
 function QuestionOneAnswer({
   dataContest,
   currentQuestion,
+  setResultSubmit,
 }: QuestionOneAnswerProps) {
-  const listAnswer: AnswerItem[] | undefined =
-    dataContest?.listQuestions?.[currentQuestion]?.answer;
+  const listAnswer: AnswerItem[] | undefined = dataContest?.answer;
 
   // State để lưu trữ đáp án đã chọn
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -28,19 +29,33 @@ function QuestionOneAnswer({
     setSelectedAnswer(value);
   };
 
-  console.log(selectedAnswer); // Kiểm tra đáp án đã chọn
+  // Cập nhật kết quả vào resultSubmit
+  useEffect(() => {
+    setResultSubmit((prevResult) => {
+      const newResultAnswer = {
+        currentQuestion,
+        oneAnswer: selectedAnswer || "", // Nếu không có đáp án, để là chuỗi rỗng
+      };
+
+      // Tìm câu trả lời cũ và thay thế bằng câu trả lời mới
+      const updatedResults = prevResult.result.filter(
+        (result) => result.currentQuestion !== currentQuestion
+      );
+
+      return {
+        ...prevResult,
+        result: [...updatedResults, newResultAnswer], // Cập nhật danh sách kết quả
+      };
+    });
+  }, [selectedAnswer, currentQuestion, setResultSubmit]);
 
   return (
     <div className="one-answer-container">
       <div className="title">
         Cau<span> {currentQuestion + 1}</span>:
       </div>
-      <div className="question">
-        {dataContest &&
-          dataContest.listQuestions &&
-          dataContest.listQuestions[currentQuestion].question}
-      </div>
-      <div className="list-answer">
+      <div className="question">{dataContest && dataContest.question}</div>
+      <div className="list-answer mt-3">
         {listAnswer &&
           listAnswer.map((answer, index) => {
             return (
@@ -67,4 +82,4 @@ function QuestionOneAnswer({
   );
 }
 
-export default memo(QuestionOneAnswer);
+export default QuestionOneAnswer;

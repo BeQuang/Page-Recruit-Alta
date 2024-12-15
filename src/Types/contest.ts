@@ -17,8 +17,14 @@ export interface DataContest {
   listQuestions?: QuestionItem[];
 }
 
+export interface ResultAnswer {
+  currentQuestion: number;
+  oneAnswer?: string;
+  multipleAnswer?: string;
+  textAnswer?: string;
+}
+
 export interface ResultSubmit {
-  type: string;
-  answer?: AnswerItem[];
-  answerText?: string;
+  id: string;
+  result: ResultAnswer[];
 }

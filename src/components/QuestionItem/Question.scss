@@ -17,3 +17,55 @@
     }
   }
 }
+
+.multiple-answer-container {
+  .list-answer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .wrap {
+      flex: 1 1 calc(42% - 20px);
+      box-sizing: border-box;
+      text-align: center;
+      padding: 10px;
+      background-color: white;
+      border: 1px solid white;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #dcdcdc;
+      }
+
+      &.active {
+        background-color: var(--primary-color);
+        color: white;
+
+        &:hover {
+          background-color: var(--primary-hover-color);
+        }
+      }
+
+      .form-check-input {
+        border: 1px solid var(--primary-color) !important;
+      }
+    }
+  }
+}
+
+.text-answer-container {
+  width: 50%;
+
+  .text {
+    width: 100%;
+    border: transparent;
+    padding: 8px;
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.25rem var(--primary-box-shadow-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+  }
+}
