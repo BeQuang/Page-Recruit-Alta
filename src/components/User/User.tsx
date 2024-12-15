@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
 import { RiUserSearchLine } from "react-icons/ri";
 import { FaCircle } from "react-icons/fa";
 import { RiBook2Line } from "react-icons/ri";
 import "./User.scss";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { Contest } from "../../Types/contest";
 
 function User() {
   const [isActionActive, setIsActionActive] = useState<boolean>(false);
@@ -17,12 +17,26 @@ function User() {
   const defaultUser = { id: "", name: "", avatarUrl: "" };
   const user = useSelector((state: RootState) => state.user) || defaultUser;
 
+  const listTitleContest: Contest[] =
+    useSelector((state: RootState) => state.titleContest) || [];
+
+  // Kiểm tra nếu có ít nhất một contest có timeCurrent !== 0
+  const isAnyTimeCurrentNotZero = listTitleContest.some(
+    (contest) => contest.timeCurrent !== 0
+  );
+
   const handleActionContest = () => {
+    if (isAnyTimeCurrentNotZero) {
+      return;
+    }
     setIsActionActive(false);
     navigate("/user");
   };
 
   const handleActionProcess = () => {
+    if (isAnyTimeCurrentNotZero) {
+      return;
+    }
     setIsActionActive(true);
     navigate("/user/process");
   };
@@ -37,6 +51,10 @@ function User() {
               <div
                 className={!isActionActive ? "item active" : "item"}
                 onClick={() => handleActionContest()}
+                // Vô hiệu hóa khi có ít nhất một contest có timeCurrent !== 0
+                style={{
+                  pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
+                }}
               >
                 <div className="title">
                   <div className="icon">
@@ -51,6 +69,10 @@ function User() {
               <div
                 className={isActionActive ? "item active" : "item"}
                 onClick={() => handleActionProcess()}
+                // Vô hiệu hóa khi có ít nhất một contest có timeCurrent !== 0
+                style={{
+                  pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
+                }}
               >
                 <div className="title">
                   <div className="icon">
@@ -62,7 +84,12 @@ function User() {
                   <FaCircle />
                 </div>
               </div>
-              <div className="avatar">
+              <div
+                className="avatar" // Vô hiệu hóa khi có ít nhất một contest có timeCurrent !== 0
+                style={{
+                  pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
+                }}
+              >
                 <img src={user?.avatarUrl} alt="metoo" className="img" />
                 <span className="name">{user?.name}</span>
               </div>

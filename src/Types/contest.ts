@@ -27,4 +27,11 @@ export interface ResultAnswer {
 export interface ResultSubmit {
   id: string;
   result: ResultAnswer[];
+  submitted?: boolean;
+}
+
+export interface Contest {
+  text: string;
+  fullTime: number;
+  timeCurrent: number;
 }

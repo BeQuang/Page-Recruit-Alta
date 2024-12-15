@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DataContest, ResultSubmit } from "../../Types/contest";
-import { fetchContestByTitle } from "../../firebase/contestController";
+import { createResultContest } from "../../firebase/contestController";
 import { ThreeCircles } from "react-loader-spinner";
 import QuestionOneAnswer from "../QuestionItem/QuestionOneAnswer";
 import Countdown from "../Time/Countdown";
@@ -10,55 +12,36 @@ import { GrFormPreviousLink } from "react-icons/gr";
 import { GrFormNextLink } from "react-icons/gr";
 import QuestionMultipleAnswer from "../QuestionItem/QuestionMultipleAnswer";
 import QuestionText from "../QuestionItem/QuestionTextAnswer";
+import { useDispatch } from "react-redux";
+import { updateFullTime } from "../../redux/slices/titleContest.slice";
+import {
+  useFetchContestData,
+  useCountdown,
+  useSubmitOnTimeUp,
+  useCompletedQuestions,
+  useBeforeUnloadWarning,
+  useBlockNavigation,
+} from "./HandleUseEffectContest";
 
 function Contest() {
   const location = useLocation();
+  const dispatch = useDispatch(); // Initialize dispatch
   const { title } = location.state || {};
 
   const [dataContest, setDataContest] = useState<DataContest | null>(null);
   const [questionCurrent, setQuestionCurrent] = useState<number>(0);
-  const [remainingTime, setRemainingTime] = useState<number>(0);
+  const [remainingTime, setRemainingTime] = useState<number>(1000);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [resultSubmit, setResultSubmit] = useState<ResultSubmit>({
     id: "",
     result: [],
+    submitted: false,
   });
 
-  const [completedQuestions, setCompletedQuestions] = useState<number>(0); // Track completed questions
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!title) {
-        console.error("No title provided");
-        return;
-      }
-
-      try {
-        const contestData = await fetchContestByTitle(title);
-        setDataContest(contestData);
-        setRemainingTime(contestData.fullTime);
-        setLoading(false);
-        setResultSubmit({ id: contestData.id, result: [] });
-      } catch (error) {
-        console.error("Error fetching contest:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [title]);
-
-  // Đếm ngược thời gian
-  useEffect(() => {
-    if (remainingTime <= 0) return;
-
-    const interval = setInterval(() => {
-      setRemainingTime((prevTime) => Math.max(prevTime - 1000, 0));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [remainingTime]);
+  const [completedQuestions, setCompletedQuestions] = useState<number>(0);
+  const [isNavigationBlocked, setIsNavigationBlocked] =
+    useState<boolean>(false); // Khai báo state isNavigationBlocked
 
   const handlePrevQuestion = () => {
     if (questionCurrent > 0) {
@@ -72,28 +55,41 @@ function Contest() {
     }
   };
 
-  const handleSubmitResult = () => {
-    console.log(resultSubmit);
+  const handleSubmitResult = async () => {
+    setResultSubmit((prevState) => ({
+      ...prevState,
+      submitted: true,
+    }));
+    const res = await createResultContest(resultSubmit);
+    setRemainingTime(0);
+    dispatch(updateFullTime({ title, newFullTime: 0 }));
+    console.log(res);
   };
 
-  useEffect(() => {
-    // Calculate completed questions based on the resultSubmit state
-    let completedCount = 0;
+  useFetchContestData(
+    title,
+    setDataContest,
+    setRemainingTime,
+    setLoading,
+    setResultSubmit
+  );
+  useCountdown(remainingTime, setRemainingTime);
+  useSubmitOnTimeUp(remainingTime, resultSubmit, handleSubmitResult);
+  useCompletedQuestions(resultSubmit, setCompletedQuestions);
+  useBeforeUnloadWarning(
+    remainingTime,
+    completedQuestions,
+    dataContest,
+    resultSubmit
+  );
+  useBlockNavigation(
+    remainingTime,
+    completedQuestions,
+    dataContest,
+    resultSubmit,
+    setIsNavigationBlocked
+  );
 
-    resultSubmit.result.forEach((result) => {
-      // Nếu result có oneAnswer, multipleAnswer hoặc textAnswer thì câu hỏi được coi là hoàn thành
-      const isCompleted =
-        (result.oneAnswer && result.oneAnswer.trim() !== "") || // Kiểm tra cho oneAnswer
-        (result.multipleAnswer && result.multipleAnswer.length > 0) || // Kiểm tra cho multipleAnswer
-        (result.textAnswer && result.textAnswer.trim() !== ""); // Kiểm tra cho textAnswer
-
-      if (isCompleted) {
-        completedCount++;
-      }
-    });
-
-    setCompletedQuestions(completedCount);
-  }, [resultSubmit, dataContest]);
   return (
     <div className="contest-child-container">
       {loading ? (
@@ -128,8 +124,9 @@ function Contest() {
               <button
                 className="btn btn-submit"
                 onClick={() => handleSubmitResult()}
+                disabled={resultSubmit.submitted}
               >
-                Nộp bài
+                {resultSubmit.submitted ? "Đã nộp bài" : "Nộp bài"}
               </button>
             </div>
           </header>

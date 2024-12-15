@@ -2,34 +2,40 @@
 import React, { useEffect, useState } from "react";
 import "./Contest.scss";
 import Dropdown from "../Dropdown/Dropdown";
-import { Option } from "../../Types/login";
 import { GoPlus } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/store";
-
+import { Contest } from "../../Types/contest";
+import { resetTime } from "../../redux/slices/titleContest.slice";
 function ChoiceContest() {
   // Lấy dữ liệu user từ Redux Store
   const defaultUser = { id: "", name: "", avatarUrl: "" };
   const user = useSelector((state: RootState) => state.user) || defaultUser;
 
-  const listTitleContest: Option[] =
+  const listTitleContest: Contest[] =
     useSelector((state: RootState) => state.titleContest) || [];
 
   useEffect(() => {
     setListOptions(listTitleContest);
-  }, []);
+  }, [listTitleContest]); // Update when listTitleContest changes
 
-  const [listOptions, setListOptions] = useState<Option[]>([]);
+  const [listOptions, setListOptions] = useState<Contest[]>([]);
   const [type, setType] = useState<string>("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // Initialize dispatch
 
   const handleContest = () => {
     if (!type) {
       alert("Vui lòng chọn một đề thi trước khi tiếp tục.");
       return;
     }
+
+    // Gọi action resetTime để reset thời gian của đề thi
+    dispatch(resetTime({ title: type }));
+
+    // Chuyển hướng đến trang /user/contest
     navigate("/user/contest", { state: { title: type } });
   };
 
