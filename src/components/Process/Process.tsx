@@ -48,7 +48,7 @@ function Process() {
     <>
       <div className="process-container">
         <h3 className="title">
-          Xin chào <span>{user?.name}</span>
+          Xin chào <span>{user?.user?.name}</span>
         </h3>
         <Form>
           <Form.Group className="mb-3" controlId="formType">

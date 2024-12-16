@@ -6,18 +6,10 @@ import { useEffect, useState, useRef } from "react";
 import { CgDanger } from "react-icons/cg";
 import { Option } from "../../Types/login";
 import { validLogin } from "../Validate/Validate";
-import {
-  createOrUpdateUser,
-  getUserInformation,
-} from "../../firebase/userController";
+import { createOrUpdateUserWithAuth } from "../../firebase/userController";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ModalSuccess from "./ModalSuccess";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/slices/user.slice";
-import { preProcessingImage } from "../PreProcessingImage/PreProcessingImage";
-import { fetchAllTitles } from "../../firebase/contestController";
-import { setTitleContest } from "../../redux/slices/titleContest.slice";
 
 function LoginForm() {
   const dataOptions = [
@@ -38,7 +30,6 @@ function LoginForm() {
   }, []);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
@@ -78,7 +69,7 @@ function LoginForm() {
     if (checkValidInput && captchaValue) {
       setErrorInput(false);
 
-      const res = await createOrUpdateUser({
+      const res = await createOrUpdateUserWithAuth({
         email,
         password,
         option: type,
@@ -90,20 +81,6 @@ function LoginForm() {
         setIsModalSuccess(true);
         resetData();
       } else if (res.EM === "UPDATE") {
-        const userInfo = await getUserInformation(res.DT);
-
-        const linkImageConvert = preProcessingImage(userInfo?.avatarUrl);
-
-        const dataRedux = { ...userInfo, avatarUrl: linkImageConvert };
-        if (dataRedux) {
-          dispatch(setUser(dataRedux));
-        }
-
-        const titleContest = await fetchAllTitles();
-        if (titleContest) {
-          dispatch(setTitleContest(titleContest));
-        }
-
         navigate("/user");
       } else if (res.EM === "ERROR") {
         setErrorInput(true);

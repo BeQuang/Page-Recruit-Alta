@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
+import noImage from "../../assets/images/noImage.png";
 import { RiUserSearchLine } from "react-icons/ri";
 import { FaCircle } from "react-icons/fa";
 import { RiBook2Line } from "react-icons/ri";
@@ -8,6 +9,7 @@ import "./User.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Contest } from "../../Types/contest";
+import { auth } from "../../firebase/firebase";
 
 function User() {
   const [isActionActive, setIsActionActive] = useState<boolean>(false);
@@ -18,7 +20,7 @@ function User() {
   const user = useSelector((state: RootState) => state.user) || defaultUser;
 
   const listTitleContest: Contest[] =
-    useSelector((state: RootState) => state.titleContest) || [];
+    useSelector((state: RootState) => state.titleContest.contests) || [];
 
   // Kiểm tra nếu có ít nhất một contest có timeCurrent !== 0
   const isAnyTimeCurrentNotZero = listTitleContest.some(
@@ -39,6 +41,10 @@ function User() {
     }
     setIsActionActive(true);
     navigate("/user/process");
+  };
+
+  const handleLogout = async () => {
+    await auth.signOut();
   };
 
   return (
@@ -90,8 +96,15 @@ function User() {
                   pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
                 }}
               >
-                <img src={user?.avatarUrl} alt="metoo" className="img" />
-                <span className="name">{user?.name}</span>
+                <img
+                  src={user?.user?.avatarUrl || noImage}
+                  alt="metoo"
+                  className="img"
+                />
+                <span className="name">{user?.user?.name}</span>
+                <div className="setting">
+                  <div onClick={() => handleLogout()}>Logout</div>
+                </div>
               </div>
             </div>
           </div>

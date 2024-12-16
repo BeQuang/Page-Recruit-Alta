@@ -1,64 +1,101 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Contest } from "../../Types/contest";
+import { fetchAllTitles } from "../../firebase/contestController";
 
-// Lấy dữ liệu ban đầu từ sessionStorage
-const initialState: Contest[] | null = JSON.parse(
-  sessionStorage.getItem("titleContest") || "null"
+// Định nghĩa kiểu trạng thái cho Redux
+interface ContestState {
+  contests: Contest[] | null;
+  loading: boolean;
+  error: string | null;
+}
+
+// Lấy dữ liệu contest từ Firestore
+export const fetchContestData = createAsyncThunk(
+  "contest/fetchContestData",
+  async (uid: string, { rejectWithValue }) => {
+    try {
+      const res = await fetchAllTitles();
+
+      if (res) {
+        // Đảm bảo mỗi contest có timeCurrent mặc định là 0
+        const formattedContests = res.map(
+          (contest: { title: string; fullTime: number }) => ({
+            text: contest.title, // Chuyển đổi title thành text
+            fullTime: contest.fullTime,
+            timeCurrent: 0, // Thiết lập timeCurrent mặc định là 0
+          })
+        );
+
+        return formattedContests;
+      } else {
+        throw new Error("No contest data found.");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      } else {
+        return rejectWithValue("An unknown error occurred.");
+      }
+    }
+  }
 );
 
-const titleContestSlice = createSlice({
-  name: "titleContest",
+const initialState: ContestState = {
+  contests: null,
+  loading: false,
+  error: null,
+};
+
+const contestSlice = createSlice({
+  name: "contest",
   initialState,
   reducers: {
-    setTitleContest: (state, action) => {
-      // Format lại dữ liệu để chứa cả title, fullTime và timeCurrent
-      const formattedData = action.payload.map(
-        (contest: {
-          title: string;
-          fullTime: number;
-          timeCurrent: number;
-        }) => ({
-          text: contest.title,
-          fullTime: contest.fullTime,
-          timeCurrent: contest.timeCurrent,
-        })
-      );
-
-      // Lưu dữ liệu vào sessionStorage dưới dạng JSON
-      sessionStorage.setItem("titleContest", JSON.stringify(formattedData));
-      return formattedData;
+    setContests: (state, action) => {
+      state.contests = action.payload;
     },
-    clearTitleContest: () => {
-      sessionStorage.removeItem("titleContest");
-      return null;
+    clearContests: (state) => {
+      state.contests = null;
     },
     updateFullTime: (state, action) => {
       const { title, newFullTime } = action.payload;
 
-      // Tìm contest theo title và cập nhật fullTime và timeCurrent
-      const contestToUpdate = state?.find((contest) => contest.text === title);
+      // Tìm contest theo title và cập nhật fullTime
+      const contestToUpdate = state.contests?.find(
+        (contest) => contest.text === title
+      );
       if (contestToUpdate) {
-        contestToUpdate.timeCurrent = newFullTime; // Cập nhật timeCurrent khi fullTime thay đổi
-
-        // Cập nhật lại sessionStorage
-        sessionStorage.setItem("titleContest", JSON.stringify(state));
+        contestToUpdate.fullTime = newFullTime;
+        contestToUpdate.timeCurrent = newFullTime; // Cập nhật timeCurrent nếu cần
       }
     },
     resetTime: (state, action) => {
       const { title } = action.payload;
 
-      // Tìm contest theo title và cập nhật timeCurrent bằng với fullTime
-      const contestToUpdate = state?.find((contest) => contest.text === title);
+      // Tìm contest theo title và đặt lại timeCurrent = fullTime
+      const contestToUpdate = state.contests?.find(
+        (contest) => contest.text === title
+      );
       if (contestToUpdate) {
         contestToUpdate.timeCurrent = contestToUpdate.fullTime;
-
-        // Cập nhật lại sessionStorage
-        sessionStorage.setItem("titleContest", JSON.stringify(state));
       }
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchContestData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchContestData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.contests = action.payload;
+      })
+      .addCase(fetchContestData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
 });
 
-export const { setTitleContest, clearTitleContest, updateFullTime, resetTime } =
-  titleContestSlice.actions;
-export default titleContestSlice.reducer;
+export const { setContests, clearContests, updateFullTime, resetTime } =
+  contestSlice.actions;
+export default contestSlice.reducer;

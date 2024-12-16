@@ -47,3 +47,11 @@ h6 {
 .fs-10 {
   font-size: 10px;
 }
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+}

@@ -60,10 +60,25 @@
           color: white;
           align-items: center;
           cursor: pointer;
+          position: relative;
 
           &:hover {
             background-color: var(--primary-hover-color);
             color: white;
+
+            .setting {
+              display: block; /* Hiển thị khi hover */
+            }
+          }
+
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 16px;
+            background: transparent;
           }
 
           .img {
@@ -75,6 +90,17 @@
           .name {
             padding-left: 6px;
             font-size: 16px;
+          }
+
+          .setting {
+            position: absolute;
+            background-color: var(--primary-hover-color);
+            width: 100%;
+            left: 0px;
+            bottom: -56%;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
           }
         }
       }

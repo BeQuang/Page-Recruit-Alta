@@ -3,8 +3,8 @@ export interface Option {
 }
 
 export interface User {
-  email?: string | null;
-  password?: string | null;
+  email: string;
+  password: string;
   option?: string | null;
   remember?: boolean;
   captcha?: boolean;

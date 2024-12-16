@@ -14,7 +14,7 @@ function ChoiceContest() {
   const user = useSelector((state: RootState) => state.user) || defaultUser;
 
   const listTitleContest: Contest[] =
-    useSelector((state: RootState) => state.titleContest) || [];
+    useSelector((state: RootState) => state.titleContest.contests) || [];
 
   useEffect(() => {
     setListOptions(listTitleContest);
@@ -42,7 +42,7 @@ function ChoiceContest() {
   return (
     <div className="choice-contest-container">
       <h3 className="title">
-        Xin chào <span>{user?.name}</span>
+        Xin chào <span>{user?.user?.name}</span>
       </h3>
       <div className="option">
         <div className="dropdown">
