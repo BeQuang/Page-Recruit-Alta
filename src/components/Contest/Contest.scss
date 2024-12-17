@@ -109,3 +109,47 @@
     }
   }
 }
+
+.modal-submit-contest-container {
+  .modal-body {
+    margin: 18px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h4 {
+      color: var(--primary-color);
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-color);
+    }
+
+    .btn-un-submit {
+      background-color: #e2e2e2;
+      border: 1px solid #e2e2e2;
+      margin-top: 1rem;
+      margin-right: 1rem;
+      color: black;
+      min-width: 100px;
+
+      &:hover {
+        background-color: #ccc;
+        border: 1px solid #ccc;
+      }
+    }
+
+    .btn-submit {
+      background-color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      margin-top: 1rem;
+      min-width: 100px;
+
+      &:hover {
+        background-color: var(--primary-hover-color);
+        border: 1px solid var(--primary-hover-color);
+      }
+    }
+  }
+}

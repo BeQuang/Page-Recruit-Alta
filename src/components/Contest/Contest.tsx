@@ -12,8 +12,6 @@ import { GrFormPreviousLink } from "react-icons/gr";
 import { GrFormNextLink } from "react-icons/gr";
 import QuestionMultipleAnswer from "../QuestionItem/QuestionMultipleAnswer";
 import QuestionText from "../QuestionItem/QuestionTextAnswer";
-import { useDispatch } from "react-redux";
-import { updateFullTime } from "../../redux/slices/titleContest.slice";
 import {
   useFetchContestData,
   useCountdown,
@@ -22,16 +20,19 @@ import {
   useBeforeUnloadWarning,
   useBlockNavigation,
 } from "./HandleUseEffectContest";
+import ModalSubmitContest from "./ModalSubmitContest";
 
 function Contest() {
   const location = useLocation();
-  const dispatch = useDispatch(); // Initialize dispatch
   const { title } = location.state || {};
 
   const [dataContest, setDataContest] = useState<DataContest | null>(null);
   const [questionCurrent, setQuestionCurrent] = useState<number>(0);
   const [remainingTime, setRemainingTime] = useState<number>(1000);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [isModalSubmitContest, setIsModalSubmitContest] =
+    useState<boolean>(false);
 
   const [resultSubmit, setResultSubmit] = useState<ResultSubmit>({
     id: "",
@@ -56,14 +57,7 @@ function Contest() {
   };
 
   const handleSubmitResult = async () => {
-    setResultSubmit((prevState) => ({
-      ...prevState,
-      submitted: true,
-    }));
-    const res = await createResultContest(resultSubmit);
-    setRemainingTime(0);
-    dispatch(updateFullTime({ title, newFullTime: 0 }));
-    console.log(res);
+    setIsModalSubmitContest(true);
   };
 
   useFetchContestData(
@@ -184,6 +178,15 @@ function Contest() {
           </div>
         </>
       )}
+      <ModalSubmitContest
+        show={isModalSubmitContest}
+        setShow={setIsModalSubmitContest}
+        resultSubmit={resultSubmit}
+        setResultSubmit={setResultSubmit}
+        remainingTime={remainingTime}
+        setRemainingTime={setRemainingTime}
+        title={title}
+      />
     </div>
   );
 }

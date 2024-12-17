@@ -8,23 +8,25 @@ import { FiSend } from "react-icons/fi";
 import ModalProcess from "./ModalProcess";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import {
+  addReportingProcess,
+  fetchAllInternshipGroup,
+} from "../../firebase/contestController";
+import { CgDanger } from "react-icons/cg";
+import { validProcess } from "../Validate/Validate";
 
 function Process() {
-  const dataOptions = [
-    { text: "TP.HCM" },
-    { text: "Hà Nội" },
-    { text: "Đà N��ng" },
-    { text: "Cần Thơ" },
-    { text: "Hồ Chí Minh" },
-    { text: "An Giang" },
-    { text: "Bắc Giang" },
-    { text: "Bắc Kạn" },
-    { text: "Bắc Ninh" },
-    { text: "Bến Tre" },
-  ];
-
   useEffect(() => {
-    setListOptions(dataOptions);
+    const fetchRoles = async () => {
+      try {
+        const dataOptions = await fetchAllInternshipGroup(); // Chờ kết quả từ API
+        setListOptions(dataOptions); // Cập nhật state
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+
+    fetchRoles();
   }, []);
 
   // Lấy dữ liệu user từ Redux Store
@@ -38,8 +40,28 @@ function Process() {
 
   const [isModalSuccess, setIsModalSuccess] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [errorInput, setErrorInput] = useState<boolean>(false);
+
+  const resetData = () => {
+    setType("");
+    setLink("");
+    setDescription("");
+    setIsModalSuccess(false);
+    setErrorInput(false);
+  };
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    const checkValidInput = validProcess({ type, link, description });
+
+    if (checkValidInput) {
+      await addReportingProcess(type, link, description);
+      resetData();
+    } else {
+      setErrorInput(true);
+      return;
+    }
 
     setIsModalSuccess(true);
   };
@@ -59,26 +81,40 @@ function Process() {
               setType={setType}
             />
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="formLink">
             <Form.Label>Link file</Form.Label>
             <Form.Control
               type="text"
               placeholder="Nhập đường dẫn"
               value={link}
+              className={errorInput ? "is-error" : ""}
               onChange={(e) => setLink(e.target.value)}
             />
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="formDescription">
             <Form.Label>Nội dung báo cáo</Form.Label>
             <textarea
               rows={4}
               cols={50}
               placeholder="Nhập nội dung..."
-              className="description"
+              className={errorInput ? "is-error description" : "description"}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </Form.Group>
+          {errorInput ? (
+            <div className="text-danger d-flex mb-3 error-text">
+              <div className="icon-danger me-2">
+                <CgDanger />
+              </div>
+              <span>
+                Lớp/Nhóm thực tập, Link file hoặc Nội dung báo cáo để trống vui
+                lòng nhập giá trị
+              </span>
+            </div>
+          ) : null}
         </Form>
         <button className="btn btn-submit" onClick={(e) => handleSubmit(e)}>
           <span>Gửi</span>

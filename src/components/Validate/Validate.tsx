@@ -3,6 +3,12 @@ interface ValidLoginProps {
   password?: string | null;
 }
 
+interface ValidProcessProps {
+  type?: string | null;
+  link?: string | null;
+  description?: string | null;
+}
+
 const validateEmail = (email: string | null | undefined) => {
   return String(email)
     .toLowerCase()
@@ -18,4 +24,11 @@ const validLogin = async ({ email, password }: ValidLoginProps) => {
   return true;
 };
 
-export { validLogin };
+const validProcess = ({ type, link, description }: ValidProcessProps) => {
+  if (type === "" || link === "" || description === "") {
+    return false;
+  }
+  return true;
+};
+
+export { validLogin, validProcess };

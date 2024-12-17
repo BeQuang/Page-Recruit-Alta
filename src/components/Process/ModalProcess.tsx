@@ -29,7 +29,7 @@ function ModalProcess({ show, setShow }: ModalProcessProps) {
         </div>
         <Modal.Body>
           <h2>Thông báo</h2>
-          <p>Bạn đã nộp đơn ứng tuyển thành công.</p>
+          <p>Bạn đã nộp bài báo cáo thành công.</p>
           <p>Vui lòng đợi phản hồi từ công ty qua gmail của bạn!</p>
 
           <Button

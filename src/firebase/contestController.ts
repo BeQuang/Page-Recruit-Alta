@@ -12,6 +12,8 @@ import { ResultAnswer, ResultSubmit } from "../Types/contest";
 export const firestore = getFirestore(app);
 const resultContestCollection = collection(firestore, "result-contest");
 const contestsCollection = collection(firestore, "contest");
+const internshipGroupCollection = collection(firestore, "internship-group");
+const reportingProcessCollection = collection(firestore, "reporting-process");
 
 export const fetchAllTitles = async (): Promise<
   { title: string; fullTime: number }[]
@@ -86,5 +88,45 @@ export const createResultContest = async (resultSubmit: ResultSubmit) => {
     console.log("Dữ liệu đã được tạo thành công với ID: ", docRef.id);
   } catch (error) {
     console.error("Lỗi khi tạo kết quả thi: ", error);
+  }
+};
+
+export const fetchAllInternshipGroup = async () => {
+  try {
+    const querySnapshot = await getDocs(internshipGroupCollection);
+
+    // Trích xuất trường 'text' từ mỗi document
+    const dataOptions = querySnapshot.docs.map((doc) => ({
+      text: doc.data().text, // Chỉ lấy trường "text"
+    }));
+
+    console.log(dataOptions);
+
+    return dataOptions; // Trả về mảng dataOptions
+  } catch (error: any) {
+    console.error("Error fetching roles:", error.message);
+    throw new Error(`Error fetching roles: ${error.message}`);
+  }
+};
+
+// Hàm để thêm một document mới vào Firebase
+export const addReportingProcess = async (
+  classValue: string,
+  link: string,
+  description: string
+) => {
+  try {
+    const newDoc = {
+      class: classValue,
+      link: link,
+      description: description,
+    };
+
+    // Thêm document vào Firestore
+    const docRef = await addDoc(reportingProcessCollection, newDoc);
+
+    console.log("Document added with ID: ", docRef.id);
+  } catch (error) {
+    console.error("Error adding document: ", error);
   }
 };
