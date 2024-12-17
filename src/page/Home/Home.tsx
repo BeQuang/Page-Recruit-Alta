@@ -1,12 +1,5 @@
-import React from "react";
-import Login from "../../components/Login/Login";
-
 function Home() {
-  return (
-    <div>
-      <Login />
-    </div>
-  );
+  return <div>Home</div>;
 }
 
 export default Home;

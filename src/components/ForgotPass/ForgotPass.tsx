@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import "./ForgotPass.scss";
 import { CgDanger } from "react-icons/cg";
-import { checkEmailExit } from "../../firebase/userController";
+import { checkEmailExit, resetPassword } from "../../firebase/userController";
 import { useNavigate } from "react-router-dom";
 
 function ForgotPass() {
@@ -16,7 +16,8 @@ function ForgotPass() {
     const res = await checkEmailExit(email);
     if (res) {
       setErrorInput(false);
-      navigate("/reset-pass", { state: { email } });
+      await resetPassword(email);
+      navigate("/login");
     } else {
       setErrorInput(true);
     }
@@ -54,7 +55,7 @@ function ForgotPass() {
         Xác nhận
       </button>
       <div>
-        <Link to="/" className="back">
+        <Link to="/login" className="back">
           Quay lại đăng nhập
         </Link>
       </div>

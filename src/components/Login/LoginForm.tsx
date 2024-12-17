@@ -6,27 +6,26 @@ import { useEffect, useState, useRef } from "react";
 import { CgDanger } from "react-icons/cg";
 import { Option } from "../../Types/login";
 import { validLogin } from "../Validate/Validate";
-import { createOrUpdateUserWithAuth } from "../../firebase/userController";
+import {
+  createOrUpdateUserWithAuth,
+  fetchAllRoles,
+} from "../../firebase/userController";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ModalSuccess from "./ModalSuccess";
 
 function LoginForm() {
-  const dataOptions = [
-    { text: "TP.HCM" },
-    { text: "Hà Nội" },
-    { text: "Đà N��ng" },
-    { text: "Cần Thơ" },
-    { text: "Hồ Chí Minh" },
-    { text: "An Giang" },
-    { text: "Bắc Giang" },
-    { text: "Bắc Kạn" },
-    { text: "Bắc Ninh" },
-    { text: "Bến Tre" },
-  ];
-
   useEffect(() => {
-    setListOptions(dataOptions);
+    const fetchRoles = async () => {
+      try {
+        const dataOptions = await fetchAllRoles(); // Chờ kết quả từ API
+        setListOptions(dataOptions); // Cập nhật state
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+
+    fetchRoles();
   }, []);
 
   const navigate = useNavigate();
@@ -35,6 +34,8 @@ function LoginForm() {
 
   const [captchaValue, setCaptchaValue] = useState<boolean>(false);
   const [errorInput, setErrorInput] = useState<boolean>(false);
+  const [errorSelect, setErrorSelect] = useState<boolean>(false);
+  const [textError, setTextError] = useState<string>("");
   const [listOptions, setListOptions] = useState<Option[]>([]);
 
   const [type, setType] = useState<string>("");
@@ -76,14 +77,45 @@ function LoginForm() {
         remember: rememberPass,
         captcha: captchaValue,
       });
+      console.log(res.EM);
+      switch (res.EM) {
+        case "CREATE":
+          setIsModalSuccess(true);
+          setErrorInput(false);
+          setErrorSelect(false);
+          resetData();
+          break;
 
-      if (res.EM === "CREATE") {
-        setIsModalSuccess(true);
-        resetData();
-      } else if (res.EM === "UPDATE") {
-        navigate("/user");
-      } else if (res.EM === "ERROR") {
-        setErrorInput(true);
+        case "UPDATE":
+          setErrorInput(false);
+          setErrorSelect(false);
+          if (type === "Sinh viên") {
+            navigate("/user");
+          } else if (type === "Doanh nghiệp") {
+            navigate("/recruit");
+          } else if (type === "Quản trị viên") {
+            navigate("/admin");
+          }
+          break;
+
+        case "ERROR":
+          setErrorInput(true);
+          setTextError("ERROR");
+          break;
+
+        case "ERROR CHARACTER":
+          setErrorInput(true);
+          setTextError("ERROR CHARACTER");
+          break;
+
+        case "ROLE VALID":
+          setErrorSelect(true);
+          console.log("ROLE");
+          break;
+
+        default:
+          console.warn("Unhandled response EM:", res.EM);
+          break;
       }
     } else {
       setErrorInput(true);
@@ -105,6 +137,14 @@ function LoginForm() {
               setType={setType}
             />
           </Form.Group>
+          {errorSelect ? (
+            <div className="text-danger d-flex mb-3 error-text">
+              <div className="icon-danger me-2">
+                <CgDanger />
+              </div>
+              <span>Vai trò của tài khoản không hợp lệ</span>
+            </div>
+          ) : null}
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>
               Email<span className="text-danger">*</span>
@@ -134,7 +174,11 @@ function LoginForm() {
               <div className="icon-danger me-2">
                 <CgDanger />
               </div>
-              <span>Sai tên đăng nhập hoặc mật khẩu.</span>
+              <span>
+                {textError === "ERROR"
+                  ? "Sai tên đăng nhập hoặc mật khẩu."
+                  : "Mật khẩu tối thiểu 6 kí tự."}
+              </span>
             </div>
           ) : null}
           <Form.Group
@@ -147,7 +191,7 @@ function LoginForm() {
               checked={rememberPass}
               onChange={() => setRememberPass(!rememberPass)}
             />
-            <Link to="/forgot-pass" className="forgot-pass">
+            <Link to="/login/forgot-pass" className="forgot-pass">
               Quên mật khẩu?
             </Link>
           </Form.Group>

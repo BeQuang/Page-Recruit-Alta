@@ -7,6 +7,7 @@ interface User {
   id: string; // id là bắt buộc
   name: string | null; // name có thể là null
   avatarUrl: string | null; // avatarUrl có thể là null
+  option: string | null;
 }
 
 interface UserState {
@@ -35,6 +36,7 @@ export const fetchUserData = createAsyncThunk(
         id: res.id, // Đảm bảo có id
         name: res.name || null, // Cấp giá trị null nếu không có name
         avatarUrl: linkImageConvert || null, // Cấp giá trị null nếu không có avatarUrl
+        option: res.option,
       };
 
       return dataRedux;
