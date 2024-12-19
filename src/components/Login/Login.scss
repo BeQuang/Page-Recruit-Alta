@@ -23,6 +23,17 @@
       align-items: center;
     }
   }
+
+  .back-home {
+    color: var(--primary-color);
+    display: flex;
+
+    span {
+      width: 80%;
+      text-align: end;
+      padding-top: 32px;
+    }
+  }
 }
 
 .container-login-form {

@@ -71,12 +71,7 @@ export const createOrUpdateUserWithAuth = async (
           dataReturn = { EM: "ROLE VALID", EC: 0, DT: existingUser.id };
           return dataReturn;
         }
-        const isLogin = await signInWithEmailAndPassword(
-          auth,
-          user.email,
-          user.password
-        );
-        console.log(isLogin);
+        await signInWithEmailAndPassword(auth, user.email, user.password);
         // Cập nhật các trường còn lại trong Firestore
         const userRef = doc(firestore, "user", existingUser.id);
         await updateDoc(userRef, {
@@ -140,21 +135,16 @@ export const getUserInformation = async (userId: string) => {
     const docRefUser = doc(usersCollection, userId);
     const docSnapUser = await getDoc(docRefUser);
 
-    if (docSnapInfo.exists() && docSnapUser.exists()) {
-      const userDataInfo = docSnapInfo.data();
-      const userDataUser = docSnapUser.data();
+    const userDataInfo = docSnapInfo.data();
+    const userDataUser = docSnapUser.data();
 
-      // Trả về thông tin đầy đủ (kết hợp từ 2 collection)
-      return {
-        id: userId,
-        name: userDataInfo.name,
-        avatarUrl: userDataInfo.avatar,
-        option: userDataUser.option, // Thêm trường 'option' từ usersCollection
-      };
-    } else {
-      console.log("No such document!");
-      return null;
-    }
+    // Trả về thông tin đầy đủ (kết hợp từ 2 collection)
+    return {
+      id: userId || "",
+      name: userDataInfo?.name || "",
+      avatarUrl: userDataInfo?.avatar || "",
+      option: userDataUser?.option || "", // Thêm trường 'option' từ usersCollection
+    };
   } catch (error: any) {
     console.error("Error fetching user information:", error.message);
     return null;
@@ -169,8 +159,6 @@ export const fetchAllRoles = async () => {
     const dataOptions = querySnapshot.docs.map((doc) => ({
       text: doc.data().text, // Chỉ lấy trường "text"
     }));
-
-    console.log(dataOptions);
 
     return dataOptions; // Trả về mảng dataOptions
   } catch (error: any) {

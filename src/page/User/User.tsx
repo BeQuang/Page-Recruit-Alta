@@ -45,6 +45,7 @@ function User() {
 
   const handleLogout = async () => {
     await auth.signOut();
+    navigate("/");
   };
 
   return (

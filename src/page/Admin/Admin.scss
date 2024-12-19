@@ -1,0 +1,26 @@
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .manager-container {
+    background-color: white;
+    height: 10%;
+    display: flex;
+    align-items: center;
+  }
+
+  .body-manager-container {
+    height: 84%;
+  }
+
+  .footer-manager-container {
+    background-color: white;
+    min-height: 6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 14px;
+  }
+}

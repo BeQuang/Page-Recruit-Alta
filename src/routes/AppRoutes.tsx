@@ -8,7 +8,6 @@ import Recruit from "../page/Recruit/Recruit";
 import Admin from "../page/Admin/Admin";
 import LoginForm from "../components/Login/LoginForm";
 import ForgotPass from "../components/ForgotPass/ForgotPass";
-import User from "../components/User/User";
 import Contest from "../components/Contest/Contest";
 import Process from "../components/Process/Process";
 import ChoiceContest from "../components/Contest/ChoiceContest";
@@ -19,6 +18,13 @@ import { AppDispatch, RootState } from "../redux/store";
 import { ThreeCircles } from "react-loader-spinner";
 import useAuthStateChanged from "./useAuthStateChanged";
 import Login from "../components/Login/Login";
+import Home from "../page/Home/Home";
+import User from "../page/User/User";
+import JD from "../components/JD/JD";
+import Register from "../components/Register/Register";
+import RegisterRecruit from "../components/Register/RegisterRecruit";
+import ManagerRecruit from "../components/Manager/ManagerRecruit";
+import ManagerIntern from "../components/Manager/ManagerIntern";
 
 function AppRoutes() {
   const [user, setUser] = useState<any>(null); // Lưu trạng thái người dùng
@@ -32,18 +38,22 @@ function AppRoutes() {
 
   useEffect(() => {
     // Kiểm tra trạng thái người dùng khi app load
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        navigate("/login");
-      } else {
-        if (userInfo?.user?.option) {
-          if (userInfo.user.option === "Sinh viên") {
-            navigate("/user"); // Điều hướng đến trang user
-          } else if (userInfo.user.option === "Doanh nghiệp") {
-            navigate("/recruit"); // Điều hướng đến trang recruit
-          } else if (userInfo.user.option === "Quản trị viên") {
-            navigate("/admin"); // Điều hướng đến trang admin
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          if (userInfo?.user?.option) {
+            if (userInfo.user.option === "Sinh viên") {
+              navigate("/user"); // Điều hướng đến trang user
+            } else if (userInfo.user.option === "Doanh nghiệp") {
+              navigate("/recruit"); // Điều hướng đến trang recruit
+            } else if (userInfo.user.option === "Quản trị viên") {
+              navigate("/admin"); // Điều hướng đến trang admin
+            }
           }
+        } catch (err) {
+          console.error("Error fetching user or contest data:", err);
+        } finally {
+          setLoading(false); // Kết thúc loading sau khi hoàn tất
         }
       }
     });
@@ -72,6 +82,11 @@ function AppRoutes() {
 
   return (
     <Routes>
+      <Route path="/" element={<Home />}>
+        <Route index element={<JD />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+
       <Route path="/login" element={<Login />}>
         <Route index element={<LoginForm />} />
         <Route path="/login/forgot-pass" element={<ForgotPass />} />
@@ -95,12 +110,32 @@ function AppRoutes() {
 
       {/* Các route dành cho Doanh nghiệp */}
       {userInfo?.user?.option === "Doanh nghiệp" && (
-        <Route path="/recruit" element={<Recruit />} />
+        <Route
+          path="/recruit"
+          element={
+            <PrivateRoutes>
+              <Recruit />
+            </PrivateRoutes>
+          }
+        >
+          <Route index element={<JD />} />
+          <Route path="/recruit/register" element={<RegisterRecruit />} />
+        </Route>
       )}
 
       {/* Các route dành cho Quản trị viên */}
       {userInfo?.user?.option === "Quản trị viên" && (
-        <Route path="/admin" element={<Admin />} />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoutes>
+              <Admin />
+            </PrivateRoutes>
+          }
+        >
+          <Route index element={<ManagerRecruit />} />
+          <Route path="/admin/intern" element={<ManagerIntern />} />
+        </Route>
       )}
 
       {/* Route mặc định cho tất cả */}

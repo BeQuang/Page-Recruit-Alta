@@ -3,6 +3,7 @@ import "./Login.scss";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
 import logoLogin from "../../assets/images/Logo-login.svg";
 import { Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -22,6 +23,10 @@ function Login() {
           </div>
           <img src={logoLogin} alt="logo" className="col-6" />
         </div>
+
+        <Link to="/" className="back-home col-6">
+          <span>Back home</span>
+        </Link>
       </div>
     </div>
   );

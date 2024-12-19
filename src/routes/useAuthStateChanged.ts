@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { AppDispatch } from "../redux/store";
 import { fetchUserData, clearUser } from "../redux/slices/user.slice";
 import {
   fetchContestData,
   clearContests,
 } from "../redux/slices/titleContest.slice";
+import { auth } from "../firebase/firebase";
 
 const useAuthStateChanged = (
   dispatch: AppDispatch,
@@ -13,20 +14,28 @@ const useAuthStateChanged = (
   setUser: (user: any) => void
 ) => {
   useEffect(() => {
-    const auth = getAuth();
     setLoading(true); // Bắt đầu quá trình fetch, set loading = true
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setLoading(true); // Đảm bảo loading được bật khi trạng thái auth thay đổi
       if (user) {
-        // Nếu người dùng đã đăng nhập, dispatch action để lấy dữ liệu người dùng từ Firestore
-        dispatch(fetchUserData(user.uid)).finally(() => setLoading(false)); // Khi dữ liệu người dùng đã được fetch, set loading = false
-        dispatch(fetchContestData(user.uid)).finally(() => setLoading(false)); // Khi dữ liệu contest đã được fetch, set loading = false
-        setUser(user); // Cập nhật trạng thái người dùng khi thay đổi
+        console.log(user);
+        try {
+          // Fetch dữ liệu người dùng và contest
+          await dispatch(fetchUserData(user.uid));
+          await dispatch(fetchContestData(user.uid));
+          setUser(user); // Cập nhật trạng thái người dùng
+        } catch (error) {
+          console.error("Error fetching user or contest data:", error);
+        } finally {
+          setLoading(false); // Kết thúc loading sau khi hoàn tất
+        }
       } else {
-        // Nếu người dùng chưa đăng nhập, xóa dữ liệu
+        // Nếu không có người dùng, clear dữ liệu Redux
         dispatch(clearUser());
         dispatch(clearContests());
-        setLoading(false); // Nếu không có user, set loading = false
+        setUser(null); // Reset trạng thái người dùng
+        setLoading(false); // Kết thúc loading
       }
     });
 
