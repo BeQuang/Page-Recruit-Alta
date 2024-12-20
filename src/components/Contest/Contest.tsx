@@ -4,7 +4,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DataContest, ResultSubmit } from "../../Types/contest";
-import { createResultContest } from "../../firebase/contestController";
 import { ThreeCircles } from "react-loader-spinner";
 import QuestionOneAnswer from "../QuestionItem/QuestionOneAnswer";
 import Countdown from "../Time/Countdown";

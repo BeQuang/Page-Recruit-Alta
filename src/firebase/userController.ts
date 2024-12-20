@@ -101,8 +101,6 @@ export const checkEmailExit = async (
     const q = query(usersCollection, where("email", "==", email));
     const querySnapshot = await getDocs(q);
 
-    console.log(querySnapshot);
-
     if (querySnapshot.empty) {
       return false;
     } else {

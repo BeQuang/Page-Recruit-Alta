@@ -1,4 +1,3 @@
-import React from "react";
 import "./Login.scss";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
 import logoLogin from "../../assets/images/Logo-login.svg";

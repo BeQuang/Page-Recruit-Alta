@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
 import noImage from "../../assets/images/noImage.png";

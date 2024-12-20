@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
 import { RiUserSearchLine } from "react-icons/ri";
 import { RiBook2Line } from "react-icons/ri";

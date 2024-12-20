@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Contest.scss";
 import Dropdown from "../Dropdown/Dropdown";
 import { GoPlus } from "react-icons/go";

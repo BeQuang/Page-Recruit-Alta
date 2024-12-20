@@ -80,12 +80,10 @@ export const createResultContest = async (resultSubmit: ResultSubmit) => {
     });
 
     // Tạo tài liệu mới với Firebase tự tạo ID
-    const docRef = await addDoc(resultContestCollection, {
+    await addDoc(resultContestCollection, {
       idContest: resultSubmit.id, // Lưu ID contest vào trường này (có thể tìm lại sau)
       result: formattedResult,
     });
-
-    console.log("Dữ liệu đã được tạo thành công với ID: ", docRef.id);
   } catch (error) {
     console.error("Lỗi khi tạo kết quả thi: ", error);
   }
@@ -99,8 +97,6 @@ export const fetchAllInternshipGroup = async () => {
     const dataOptions = querySnapshot.docs.map((doc) => ({
       text: doc.data().text, // Chỉ lấy trường "text"
     }));
-
-    console.log(dataOptions);
 
     return dataOptions; // Trả về mảng dataOptions
   } catch (error: any) {
@@ -123,9 +119,7 @@ export const addReportingProcess = async (
     };
 
     // Thêm document vào Firestore
-    const docRef = await addDoc(reportingProcessCollection, newDoc);
-
-    console.log("Document added with ID: ", docRef.id);
+    await addDoc(reportingProcessCollection, newDoc);
   } catch (error) {
     console.error("Error adding document: ", error);
   }

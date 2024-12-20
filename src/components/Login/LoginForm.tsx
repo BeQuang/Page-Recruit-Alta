@@ -77,7 +77,7 @@ function LoginForm() {
         remember: rememberPass,
         captcha: captchaValue,
       });
-      console.log(res.EM);
+
       switch (res.EM) {
         case "CREATE":
           setIsModalSuccess(true);
@@ -110,7 +110,6 @@ function LoginForm() {
 
         case "ROLE VALID":
           setErrorSelect(true);
-          console.log("ROLE");
           break;
 
         default:
