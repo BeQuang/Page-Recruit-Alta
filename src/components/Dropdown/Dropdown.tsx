@@ -12,9 +12,10 @@ interface DropdownProps {
   listOptions: Option[];
   setType: (value: string) => void;
   size?: string;
+  title?: string;
 }
 
-function Dropdown({ value, listOptions, setType, size }: DropdownProps) {
+function Dropdown({ value, listOptions, setType, size, title }: DropdownProps) {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [option, setOption] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -51,7 +52,7 @@ function Dropdown({ value, listOptions, setType, size }: DropdownProps) {
         onClick={() => setIsFocus(!isFocus)}
       >
         <p className="title">
-          {option.trim() === "" || value === "" ? "Choose option" : option}
+          {option.trim() === "" || value === "" ? title : option}
         </p>
         <div className={!isFocus ? "icon-down icon" : "icon-up icon"}>
           <IoMdArrowDropdown />

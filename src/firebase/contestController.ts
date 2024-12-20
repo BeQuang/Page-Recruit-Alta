@@ -12,34 +12,7 @@ import { ResultAnswer, ResultSubmit } from "../Types/contest";
 export const firestore = getFirestore(app);
 const resultContestCollection = collection(firestore, "result-contest");
 const contestsCollection = collection(firestore, "contest");
-const internshipGroupCollection = collection(firestore, "internship-group");
 const reportingProcessCollection = collection(firestore, "reporting-process");
-
-export const fetchAllTitles = async (): Promise<
-  { title: string; fullTime: number }[]
-> => {
-  try {
-    const querySnapshot = await getDocs(contestsCollection);
-    const contests = querySnapshot.docs
-      .map((doc) => {
-        const data = doc.data();
-        return {
-          title: data?.title,
-          fullTime: data?.fullTime, // Lấy thêm fullTime từ mỗi contest
-          timeCurrent: 0,
-        };
-      })
-      .filter(
-        (contest) =>
-          contest.title !== undefined && contest.fullTime !== undefined
-      ); // Lọc những contest không có title hoặc fullTime
-
-    return contests;
-  } catch (error) {
-    console.error("Error fetching titles:", error);
-    throw error;
-  }
-};
 
 export const fetchContestByTitle = async (
   title: string
@@ -86,22 +59,6 @@ export const createResultContest = async (resultSubmit: ResultSubmit) => {
     });
   } catch (error) {
     console.error("Lỗi khi tạo kết quả thi: ", error);
-  }
-};
-
-export const fetchAllInternshipGroup = async () => {
-  try {
-    const querySnapshot = await getDocs(internshipGroupCollection);
-
-    // Trích xuất trường 'text' từ mỗi document
-    const dataOptions = querySnapshot.docs.map((doc) => ({
-      text: doc.data().text, // Chỉ lấy trường "text"
-    }));
-
-    return dataOptions; // Trả về mảng dataOptions
-  } catch (error: any) {
-    console.error("Error fetching roles:", error.message);
-    throw new Error(`Error fetching roles: ${error.message}`);
   }
 };
 

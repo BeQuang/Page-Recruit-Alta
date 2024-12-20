@@ -1,0 +1,83 @@
+.register-container {
+  h3 {
+    padding-top: 42px;
+    padding-bottom: 8px;
+    color: var(--primary-color);
+    text-transform: uppercase;
+  }
+
+  .input-file {
+    position: relative;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 24px 12px;
+    border-radius: 8px;
+
+    .icon {
+      font-size: 42px;
+      color: var(--primary-color);
+    }
+
+    .btn-file {
+      color: white;
+      background-color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+
+      &:hover {
+        background-color: var(--primary-hover-color);
+        border-color: var(--primary-hover-color);
+        color: white;
+      }
+    }
+  }
+
+  .input-date {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .icon {
+      position: absolute;
+      left: 12px; // Khoảng cách từ biểu tượng đến cạnh trái
+      font-size: 20px;
+      color: var(--primary-color);
+      z-index: 2;
+    }
+
+    .react-datepicker-wrapper {
+      width: 100%;
+
+      .form-control {
+        padding-left: 9%;
+      }
+    }
+  }
+
+  .notice {
+    font-size: 12px;
+    color: #aba7a7;
+  }
+
+  .btn-submit {
+    min-width: 100px;
+    margin-top: 12px;
+    color: white;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+
+    &:hover {
+      background-color: var(--primary-hover-color);
+      border-color: var(--primary-hover-color);
+      color: white;
+    }
+
+    .icon {
+      margin-left: 8px;
+    }
+  }
+}

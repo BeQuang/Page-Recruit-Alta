@@ -8,12 +8,10 @@ import { FiSend } from "react-icons/fi";
 import ModalProcess from "./ModalProcess";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import {
-  addReportingProcess,
-  fetchAllInternshipGroup,
-} from "../../firebase/contestController";
+import { addReportingProcess } from "../../firebase/contestController";
 import { CgDanger } from "react-icons/cg";
 import { validProcess } from "../Validate/Validate";
+import { fetchAllInternshipGroup } from "../../firebase/listDropdownController";
 
 function Process() {
   useEffect(() => {
@@ -79,6 +77,7 @@ function Process() {
               value={type}
               listOptions={listOptions}
               setType={setType}
+              title="Chọn lớp/nhóm thực tập"
             />
           </Form.Group>
 

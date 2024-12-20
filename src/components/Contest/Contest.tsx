@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { DataContest, ResultSubmit } from "../../Types/contest";
 import { ThreeCircles } from "react-loader-spinner";
 import QuestionOneAnswer from "../QuestionItem/QuestionOneAnswer";
-import Countdown from "../Time/Countdown";
+import Countdown from "../Convert/Countdown";
 import { GrFormPreviousLink } from "react-icons/gr";
 import { GrFormNextLink } from "react-icons/gr";
 import QuestionMultipleAnswer from "../QuestionItem/QuestionMultipleAnswer";

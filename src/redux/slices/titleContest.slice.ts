@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Contest } from "../../Types/contest";
-import { fetchAllTitles } from "../../firebase/contestController";
+import { fetchAllTitles } from "../../firebase/listDropdownController";
 
 // Định nghĩa kiểu trạng thái cho Redux
 interface ContestState {

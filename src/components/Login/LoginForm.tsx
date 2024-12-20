@@ -134,6 +134,7 @@ function LoginForm() {
               value={type}
               listOptions={listOptions}
               setType={setType}
+              title="Chọn vai trò"
             />
           </Form.Group>
           {errorSelect ? (

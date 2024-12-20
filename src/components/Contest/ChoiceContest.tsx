@@ -51,6 +51,7 @@ function ChoiceContest() {
             listOptions={listOptions}
             setType={setType}
             size="large"
+            title="Chọn môn thi"
           />
         </div>
         <button className="btn btn-create" onClick={() => handleContest()}>
