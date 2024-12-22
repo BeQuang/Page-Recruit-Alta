@@ -10,6 +10,8 @@ const implementationFormCollection = collection(
   "implementation-form"
 );
 const whereKnownCollection = collection(firestore, "where-known");
+const areasExpertiseCollection = collection(firestore, "areas-expertise");
+const companyCollection = collection(firestore, "company");
 
 export const fetchAllTitles = async (): Promise<
   { title: string; fullTime: number }[]
@@ -104,6 +106,38 @@ export const fetchAllImplementationForm = async () => {
 export const fetchAllWhereKnown = async () => {
   try {
     const querySnapshot = await getDocs(whereKnownCollection);
+
+    // Trích xuất trường 'text' từ mỗi document
+    const dataOptions = querySnapshot.docs.map((doc) => ({
+      text: doc.data().text, // Chỉ lấy trường "text"
+    }));
+
+    return dataOptions; // Trả về mảng dataOptions
+  } catch (error: any) {
+    console.error("Error fetching roles:", error.message);
+    throw new Error(`Error fetching roles: ${error.message}`);
+  }
+};
+
+export const fetchAllAreasExpertise = async () => {
+  try {
+    const querySnapshot = await getDocs(areasExpertiseCollection);
+
+    // Trích xuất trường 'text' từ mỗi document
+    const dataOptions = querySnapshot.docs.map((doc) => ({
+      text: doc.data().text, // Chỉ lấy trường "text"
+    }));
+
+    return dataOptions; // Trả về mảng dataOptions
+  } catch (error: any) {
+    console.error("Error fetching roles:", error.message);
+    throw new Error(`Error fetching roles: ${error.message}`);
+  }
+};
+
+export const fetchAllCompany = async () => {
+  try {
+    const querySnapshot = await getDocs(companyCollection);
 
     // Trích xuất trường 'text' từ mỗi document
     const dataOptions = querySnapshot.docs.map((doc) => ({
