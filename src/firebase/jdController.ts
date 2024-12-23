@@ -24,6 +24,7 @@ export const fetchAllJobs = async () => {
         request: data.request || "",
         email: data.email || "",
         phone: data.phone || "",
+        link: data.link || "",
       };
     });
 

@@ -34,6 +34,7 @@ function Admin() {
         <div className="container">
           <HeaderComponent
             isActionActive={isActionActive}
+            setIsActionActive={setIsActionActive}
             handleActionRequest={handleActionRequest}
             handleActionInternShip={handleActionInternShip}
             user={user}

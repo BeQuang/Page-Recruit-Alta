@@ -37,17 +37,27 @@ function AppRoutes() {
   useAuthStateChanged(dispatch, setLoading, setUser);
 
   useEffect(() => {
-    // Kiểm tra trạng thái người dùng khi app load
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
+          // Chỉ điều hướng khi không phải route hợp lệ
           if (userInfo?.user?.option) {
-            if (userInfo.user.option === "Sinh viên") {
-              navigate("/user"); // Điều hướng đến trang user
-            } else if (userInfo.user.option === "Doanh nghiệp") {
-              navigate("/recruit"); // Điều hướng đến trang recruit
-            } else if (userInfo.user.option === "Quản trị viên") {
-              navigate("/admin"); // Điều hướng đến trang admin
+            const currentPath = window.location.pathname;
+            if (
+              userInfo.user.option === "Sinh viên" &&
+              !currentPath.startsWith("/user")
+            ) {
+              navigate("/user");
+            } else if (
+              userInfo.user.option === "Doanh nghiệp" &&
+              !currentPath.startsWith("/recruit")
+            ) {
+              navigate("/recruit");
+            } else if (
+              userInfo.user.option === "Quản trị viên" &&
+              !currentPath.startsWith("/admin")
+            ) {
+              navigate("/admin");
             }
           }
         } catch (err) {
@@ -60,7 +70,7 @@ function AppRoutes() {
 
     // Cleanup subscription khi component bị unmount
     return () => unsubscribe();
-  }, [userInfo?.user?.option]);
+  }, [userInfo?.user?.option, navigate]);
 
   // Nếu đang loading, không render routes, chỉ hiển thị loading
   if (loading) {
@@ -103,8 +113,8 @@ function AppRoutes() {
           }
         >
           <Route index element={<ChoiceContest />} />
-          <Route path="/user/contest" element={<Contest />} />
-          <Route path="/user/process" element={<Process />} />
+          <Route path="contest" element={<Contest />} />
+          <Route path="process" element={<Process />} />
         </Route>
       )}
 
@@ -119,7 +129,7 @@ function AppRoutes() {
           }
         >
           <Route index element={<JD />} />
-          <Route path="/recruit/register" element={<RegisterRecruit />} />
+          <Route path="register" element={<RegisterRecruit />} />
         </Route>
       )}
 
@@ -134,7 +144,7 @@ function AppRoutes() {
           }
         >
           <Route index element={<ManagerRecruit />} />
-          <Route path="/admin/intern" element={<ManagerIntern />} />
+          <Route path="intern" element={<ManagerIntern />} />
         </Route>
       )}
 

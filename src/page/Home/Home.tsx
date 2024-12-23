@@ -27,6 +27,7 @@ function Home() {
         <div className="container">
           <HeaderComponent
             isActionActive={isActionActive}
+            setIsActionActive={setIsActionActive}
             handleActionRequest={handleActionJD}
             handleActionInternShip={handleActionRegister}
             handleLogout={handleLogin}

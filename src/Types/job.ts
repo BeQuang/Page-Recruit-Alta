@@ -6,4 +6,5 @@ export interface JobItem {
   request: string;
   email: string;
   phone: string;
+  link: string;
 }

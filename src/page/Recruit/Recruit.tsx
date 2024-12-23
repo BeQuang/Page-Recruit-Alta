@@ -34,6 +34,7 @@ function Recruit() {
         <div className="container">
           <HeaderComponent
             isActionActive={isActionActive}
+            setIsActionActive={setIsActionActive}
             handleActionContest={handleActionContest}
             handleActionProcess={handleActionProcess}
             user={user}

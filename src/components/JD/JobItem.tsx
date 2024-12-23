@@ -1,5 +1,4 @@
 import "./JD.scss";
-import logo from "../../assets/images/alta.svg";
 import download from "../../assets/images/Icon.svg";
 import { HiOutlineMail } from "react-icons/hi";
 import { FiPhone } from "react-icons/fi";
@@ -10,17 +9,22 @@ interface JobProps {
 }
 
 function JobItem({ job }: JobProps) {
+  const handleDownload = () => {
+    // Mở file trong tab mới
+    window.open(job.link, "_blank"); // Tab mới được mở
+  };
+
   return (
     <div className="job-item-container">
       <div className="company">
-        <div className="d-flex ">
+        <div className="d-flex">
           <img src={job.logo} alt="logo" className="logo-company" />
           <div className="text">
             <div>{job.work}</div>
             <span>{job.company}</span>
           </div>
         </div>
-        <div className="download">
+        <div className="download" onClick={handleDownload}>
           <img src={download} alt="download" className="icon" />
         </div>
       </div>

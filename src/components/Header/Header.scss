@@ -10,6 +10,14 @@
     align-items: center;
     justify-content: space-between;
 
+    &.admin {
+      justify-content: end;
+
+      .title {
+        padding-right: 12px;
+      }
+    }
+
     .item {
       cursor: pointer;
 

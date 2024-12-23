@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
 import noImage from "../../assets/images/noImage.png";
@@ -21,6 +21,12 @@ function User() {
 
   const listTitleContest: Contest[] =
     useSelector((state: RootState) => state.titleContest.contests) || [];
+
+  useEffect(() => {
+    if (window.location.pathname === "/user/process") {
+      setIsActionActive(true);
+    }
+  }, []);
 
   // Kiểm tra nếu có ít nhất một contest có timeCurrent !== 0
   const isAnyTimeCurrentNotZero = listTitleContest.some(
