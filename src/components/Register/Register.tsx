@@ -9,6 +9,8 @@ import Dropdown from "../Dropdown/Dropdown";
 import { FiSend } from "react-icons/fi";
 import useFetchDataListRegister from "./useFetchDataListRegister";
 import { saveDataToFirestore } from "../../firebase/recruitController";
+import { validRegisterOnline } from "../Validate/Validate";
+import { CgDanger } from "react-icons/cg";
 
 function Register() {
   // Tạo các state để lưu trữ dữ liệu trả về
@@ -44,6 +46,8 @@ function Register() {
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
 
+  const [errorInput, setErrorInput] = useState<number>(0);
+
   const handleSubmit = () => {
     // Tạo object formData với kiểu dữ liệu đã định nghĩa
     const formData = {
@@ -60,8 +64,28 @@ function Register() {
       selectedFile,
     };
 
+    const checkValidInput = validRegisterOnline({
+      name,
+      school,
+      specialized,
+      email,
+      phone,
+      location,
+      shape,
+      implement,
+      known,
+      selectedDate,
+      selectedFile,
+    });
+
+    if (checkValidInput !== 0) {
+      setErrorInput(checkValidInput);
+      return;
+    }
+
     // Gọi hàm lưu dữ liệu
     saveDataToFirestore(formData);
+    setErrorInput(0);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,6 +133,14 @@ function Register() {
                 Chọn file
               </button>
             </div>
+            {errorInput === 11 ? (
+              <div className="text-danger d-flex error-text">
+                <div className="icon-danger me-2">
+                  <CgDanger />
+                </div>
+                <span>Vui lòng chọn file</span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -124,7 +156,7 @@ function Register() {
                 placeholder="Nhập họ và tên"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
+                className={errorInput === 1 ? "is-error" : ""}
               />
             </Form.Group>
           </div>
@@ -138,8 +170,16 @@ function Register() {
                 placeholder="Nhập email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                className={errorInput === 4 ? "is-error" : ""}
               />
+              {errorInput === 4 ? (
+                <div className="text-danger d-flex error-text">
+                  <div className="icon-danger me-2">
+                    <CgDanger />
+                  </div>
+                  <span>Email không hợp lệ</span>
+                </div>
+              ) : null}
             </Form.Group>
           </div>
         </div>
@@ -166,6 +206,14 @@ function Register() {
                 />
               </div>
             </Form.Group>
+            {errorInput === 10 ? (
+              <div className="text-danger d-flex error-text">
+                <div className="icon-danger me-2">
+                  <CgDanger />
+                </div>
+                <span>Vui lòng chọn ngày sinh</span>
+              </div>
+            ) : null}
           </div>
           <div className="col-6">
             <Form.Group controlId="phone">
@@ -177,7 +225,7 @@ function Register() {
                 placeholder="Nhập số điện thoại"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                required
+                className={errorInput === 5 ? "is-error" : ""}
               />
             </Form.Group>
           </div>
@@ -197,6 +245,14 @@ function Register() {
                 title="Chọn vị trí"
               />
             </Form.Group>
+            {errorInput === 6 ? (
+              <div className="text-danger d-flex error-text">
+                <div className="icon-danger me-2">
+                  <CgDanger />
+                </div>
+                <span>Vui lòng chọn vị trí ứng tuyển</span>
+              </div>
+            ) : null}
           </div>
           <div className="col-6">
             <Form.Group controlId="shape">
@@ -210,6 +266,14 @@ function Register() {
                 title="Chọn hình thức"
               />
             </Form.Group>
+            {errorInput === 7 ? (
+              <div className="text-danger d-flex error-text">
+                <div className="icon-danger me-2">
+                  <CgDanger />
+                </div>
+                <span>Vui lòng chọn hình thức đăng ký</span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -227,6 +291,14 @@ function Register() {
                 title="Chọn hình thức"
               />
             </Form.Group>
+            {errorInput === 8 ? (
+              <div className="text-danger d-flex error-text">
+                <div className="icon-danger me-2">
+                  <CgDanger />
+                </div>
+                <span>Vui lòng chọn hình thức thực hiện</span>
+              </div>
+            ) : null}
           </div>
           <div className="col-6">
             <Form.Group controlId="known">
@@ -241,6 +313,14 @@ function Register() {
                 title="Chọn lý do"
               />
             </Form.Group>
+            {errorInput === 9 ? (
+              <div className="text-danger d-flex error-text">
+                <div className="icon-danger me-2">
+                  <CgDanger />
+                </div>
+                <span>Vui lòng chọn lý do</span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -256,7 +336,7 @@ function Register() {
                 placeholder="Nhập Trường đang học"
                 value={school}
                 onChange={(e) => setSchool(e.target.value)}
-                required
+                className={errorInput === 2 ? "is-error" : ""}
               />
             </Form.Group>
           </div>
@@ -270,17 +350,19 @@ function Register() {
                 placeholder="Nhập Chuyên ngành"
                 value={specialized}
                 onChange={(e) => setSpecialized(e.target.value)}
-                required
+                className={errorInput === 3 ? "is-error" : ""}
               />
             </Form.Group>
           </div>
         </div>
       </div>
 
-      <div className="notice">
-        <span className="text-danger">*</span>
-        <span> Là những thông tin bắt buộc</span>
-      </div>
+      {errorInput ? (
+        <div className="notice">
+          <span className="text-danger">*</span>
+          <span> Là những thông tin bắt buộc</span>
+        </div>
+      ) : null}
 
       <button className="btn btn-submit" type="button" onClick={handleSubmit}>
         <span>Gửi</span>

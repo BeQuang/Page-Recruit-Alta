@@ -1,42 +1,17 @@
 import { collection, addDoc } from "firebase/firestore";
 import { firestore } from "./userController"; // Đảm bảo đã cấu hình Firebase Firestore
 import { uploadFileToCloudinary } from "../cloudinary/Cloudinary"; // Đảm bảo import hàm upload
-
-// Định nghĩa interface cho các tham số
-interface FormData {
-  name: string;
-  school: string;
-  specialized: string;
-  email: string;
-  phone: string;
-  location: string;
-  shape: string;
-  implement: string;
-  known: string;
-  selectedDate: Date | null;
-  selectedFile: File | null; // Trường file sẽ không được lưu
-}
-
-// Định nghĩa interface cho cấu trúc dữ liệu lưu vào Firestore
-interface FirestoreData {
-  name: string;
-  school: string;
-  specialized: string;
-  email: string;
-  phone: string;
-  location: string;
-  shape: string;
-  implement: string;
-  known: string;
-  selectedDate: Date | null;
-  selectedFileURL: string | null; // Trường chứa URL của file từ Cloudinary
-  createdAt: Date;
-}
+import {
+  FirestoreDataRegisterBusiness,
+  FirestoreDataRegisterOnline,
+  FormDataRegisterOnline,
+} from "../Types/register";
 
 const registerOnlineCollection = collection(firestore, "register-online");
+const registerBusinessCollection = collection(firestore, "register-business");
 
 export const saveDataToFirestore = async (
-  formData: FormData
+  formData: FormDataRegisterOnline
 ): Promise<void> => {
   const {
     name,
@@ -53,7 +28,7 @@ export const saveDataToFirestore = async (
   } = formData;
 
   // Tạo đối tượng dataToSave
-  const dataToSave: FirestoreData = {
+  const dataToSave: FirestoreDataRegisterOnline = {
     name,
     school,
     specialized,
@@ -79,6 +54,34 @@ export const saveDataToFirestore = async (
 
     // Lưu dữ liệu vào Firestore
     const docRef = await addDoc(registerOnlineCollection, dataToSave);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
+export const saveBusinessDataToFirestore = async (
+  email: string,
+  address: string,
+  business: string,
+  manager: string,
+  phone: string,
+  phoneManager: string
+): Promise<void> => {
+  // Tạo đối tượng dataToSave
+  const dataToSave: FirestoreDataRegisterBusiness = {
+    email,
+    address,
+    business,
+    manager,
+    phone,
+    phoneManager,
+    createdAt: new Date(), // Thêm thời gian tạo
+  };
+
+  try {
+    // Lưu dữ liệu vào Firestore
+    const docRef = await addDoc(registerBusinessCollection, dataToSave);
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);

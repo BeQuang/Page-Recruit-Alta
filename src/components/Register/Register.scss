@@ -6,6 +6,10 @@
     text-transform: uppercase;
   }
 
+  .error-text {
+    font-size: small;
+  }
+
   .input-file {
     position: relative;
     background-color: white;
@@ -56,6 +60,41 @@
         padding-left: 9%;
       }
     }
+  }
+
+  .notice {
+    font-size: 12px;
+    color: #aba7a7;
+  }
+
+  .btn-submit {
+    min-width: 100px;
+    margin-top: 12px;
+    color: white;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+
+    &:hover {
+      background-color: var(--primary-hover-color);
+      border-color: var(--primary-hover-color);
+      color: white;
+    }
+
+    .icon {
+      margin-left: 8px;
+    }
+  }
+}
+
+.register-recruit-container {
+  h3 {
+    color: var(--primary-color);
+    text-transform: uppercase;
+    padding-top: 42px;
+  }
+
+  .error-text {
+    font-size: small;
   }
 
   .notice {
