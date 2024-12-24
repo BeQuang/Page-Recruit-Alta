@@ -37,9 +37,9 @@ export const useFetchDataListJD = ({
 };
 
 export function useJobSearch(
-  areasExpertise: string,
-  company: string,
-  textSearcher: string
+  areasExpertise?: string,
+  company?: string,
+  textSearcher?: string
 ): JobList[] {
   const [jobList, setJobList] = useState<JobList[]>([]);
 

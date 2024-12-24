@@ -1,6 +1,5 @@
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "./userController"; // Import Firestore instance
-import { preProcessingImage } from "../components/PreProcessingImage/PreProcessingImage";
 
 // Tạo tham chiếu đến collection "job"
 const jobCollection = collection(firestore, "job");
@@ -15,16 +14,16 @@ export const fetchAllJobs = async () => {
     const jobs = querySnapshot.docs.map((doc) => {
       const data = doc.data();
 
-      const urlImage = preProcessingImage(data.logo);
       return {
         id: doc.id,
-        logo: urlImage || "", // Giá trị mặc định nếu thiếu
+        logo: data.logoURL || "", // Giá trị mặc định nếu thiếu
         work: data.work || "",
-        company: data.company || "",
-        request: data.request || "",
+        company: data.name || "",
+        request: data.description || "",
         email: data.email || "",
         phone: data.phone || "",
-        link: data.link || "",
+        link: data.fileURL || "",
+        country: data.location || [],
       };
     });
 

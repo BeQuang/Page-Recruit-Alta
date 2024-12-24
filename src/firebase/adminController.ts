@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { uploadFileToCloudinary } from "../cloudinary/Cloudinary";
 import { firestore } from "./userController";
 import axios from "axios";
@@ -72,5 +72,47 @@ export const createJobData = async (
     }
 
     throw new Error("Failed to add job data");
+  }
+};
+
+export const updateJobData = async (
+  id: string,
+  work: string,
+  description: string,
+  location: string | string[],
+  selectedFile?: File | null
+) => {
+  try {
+    // Tạo đối tượng chứa các trường cần cập nhật
+    const updatedData: any = {
+      work,
+      description,
+      location,
+    };
+
+    // Kiểm tra và upload file nếu có
+    if (selectedFile) {
+      console.log("Uploading file...");
+      const fileURL = await uploadFileToCloudinary(selectedFile);
+      console.log("File uploaded to Cloudinary:", fileURL);
+      updatedData.fileURL = fileURL; // Cập nhật fileURL nếu có file
+    }
+
+    // Cập nhật dữ liệu trong Firestore
+    const jobDocRef = doc(firestore, "job", id); // Lấy document theo id
+    await updateDoc(jobDocRef, updatedData);
+
+    console.log("Job data updated successfully");
+  } catch (error) {
+    console.error("Error updating job data:", error);
+
+    // Kiểm tra chi tiết lỗi
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error details:", error.response?.data);
+    } else {
+      console.error("General error:", error);
+    }
+
+    throw new Error("Failed to update job data");
   }
 };
