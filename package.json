@@ -10,11 +10,11 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.121",
-    "@types/react": "^18.3.14",
     "@types/react-dom": "^18.3.2",
     "@types/react-router-dom": "^5.3.3",
     "ajv": "^8.0.0",
     "ajv-keywords": "^5.0.0",
+    "antd": "^5.22.6",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "cloudinary": "^2.5.1",
@@ -32,6 +32,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
+    "react-select": "^5.9.0",
     "redux-thunk": "^3.1.0",
     "sass": "^1.82.0",
     "sass-loader": "^16.0.4",
@@ -64,6 +65,8 @@
     ]
   },
   "devDependencies": {
+    "@types/antd": "^1.0.4",
+    "@types/react": "^19.0.2",
     "@types/react-google-recaptcha": "^2.1.9"
   }
 }

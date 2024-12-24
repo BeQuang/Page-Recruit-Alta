@@ -133,7 +133,7 @@ function LoginForm() {
             <Dropdown
               value={type}
               listOptions={listOptions}
-              setType={setType}
+              setType={(value: string | string[]) => setType(value as string)}
               title="Chọn vai trò"
             />
           </Form.Group>

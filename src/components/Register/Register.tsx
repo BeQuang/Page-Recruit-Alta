@@ -11,7 +11,7 @@ import useFetchDataListRegister from "./useFetchDataListRegister";
 import { saveDataToFirestore } from "../../firebase/recruitController";
 import { validRegisterOnline } from "../Validate/Validate";
 import { CgDanger } from "react-icons/cg";
-import ModalRegisterSuccess from "../../Modal/ModalRegisterSuccess";
+import ModalRegisterSuccess from "../Modal/ModalRegisterSuccess";
 
 function Register() {
   // Tạo các state để lưu trữ dữ liệu trả về
@@ -261,7 +261,9 @@ function Register() {
                 <Dropdown
                   value={location}
                   listOptions={listApplyPositions}
-                  setType={setLocation}
+                  setType={(value: string | string[]) =>
+                    setLocation(value as string)
+                  }
                   title="Chọn vị trí"
                 />
               </Form.Group>
@@ -282,7 +284,9 @@ function Register() {
                 <Dropdown
                   value={shape}
                   listOptions={listRegistrationForms}
-                  setType={setShape}
+                  setType={(value: string | string[]) =>
+                    setShape(value as string)
+                  }
                   title="Chọn hình thức"
                 />
               </Form.Group>
@@ -307,7 +311,9 @@ function Register() {
                 <Dropdown
                   value={implement}
                   listOptions={listImplementationForms}
-                  setType={setImplement}
+                  setType={(value: string | string[]) =>
+                    setImplement(value as string)
+                  }
                   title="Chọn hình thức"
                 />
               </Form.Group>
@@ -329,7 +335,9 @@ function Register() {
                 <Dropdown
                   value={known}
                   listOptions={listWhereKnown}
-                  setType={setKnown}
+                  setType={(value: string | string[]) =>
+                    setKnown(value as string)
+                  }
                   title="Chọn lý do"
                 />
               </Form.Group>

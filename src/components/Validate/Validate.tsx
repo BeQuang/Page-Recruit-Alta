@@ -75,6 +75,29 @@ const validRegisterOnline = ({
   return 0; // Không có lỗi
 };
 
+// Hàm kiểm tra tính hợp lệ cho các biến trong state
+const validateFormAdmin = (
+  name: string,
+  email: string,
+  work: string,
+  description: string,
+  location: string | string[],
+  phone: string,
+  selectedFile: File | null,
+  selectedLogo: File | null
+): number => {
+  if (name === "") return 1; // Name để trống
+  if (!validateEmail(email)) return 2; // Email không hợp lệ
+  if (work === "") return 3; // Work để trống
+  if (description === "") return 4; // Description để trống
+  if (Array.isArray(location) ? location.length === 0 : location === "")
+    return 5; // Location để trống
+  if (phone === "") return 6; // Phone không hợp lệ
+  if (selectedFile === null) return 7; // File chưa được chọn
+  if (selectedLogo === null) return 8; // Logo chưa được chọn
+  return 0; // Không có lỗi
+};
+
 export {
   validateEmail,
   validatePhone,
@@ -82,4 +105,5 @@ export {
   validProcess,
   validRegisterBusiness,
   validRegisterOnline,
+  validateFormAdmin,
 };

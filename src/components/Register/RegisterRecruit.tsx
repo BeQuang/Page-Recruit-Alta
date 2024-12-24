@@ -5,7 +5,7 @@ import { FiSend } from "react-icons/fi";
 import { saveBusinessDataToFirestore } from "../../firebase/recruitController";
 import { validateEmail, validRegisterBusiness } from "../Validate/Validate";
 import { CgDanger } from "react-icons/cg";
-import ModalRegisterSuccess from "../../Modal/ModalRegisterSuccess";
+import ModalRegisterSuccess from "../Modal/ModalRegisterSuccess";
 
 function RegisterRecruit() {
   const [email, setEmail] = useState<string>("");

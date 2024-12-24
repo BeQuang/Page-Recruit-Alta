@@ -24,7 +24,6 @@ import JD from "../components/JD/JD";
 import Register from "../components/Register/Register";
 import RegisterRecruit from "../components/Register/RegisterRecruit";
 import ManagerRecruit from "../components/Manager/ManagerRecruit";
-import ManagerIntern from "../components/Manager/ManagerIntern";
 
 function AppRoutes() {
   const [user, setUser] = useState<any>(null); // Lưu trạng thái người dùng
@@ -144,7 +143,6 @@ function AppRoutes() {
           }
         >
           <Route index element={<ManagerRecruit />} />
-          <Route path="intern" element={<ManagerIntern />} />
         </Route>
       )}
 

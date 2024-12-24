@@ -1,0 +1,53 @@
+.manager-recruit-container {
+  margin-top: 42px;
+
+  .btn-add-item {
+    color: white;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    font-size: 14px;
+
+    &:hover {
+      background-color: var(--primary-hover-color);
+      border-color: var(--primary-hover-color);
+      color: white;
+    }
+
+    .icon {
+      padding-left: 6px;
+    }
+  }
+
+  .table {
+    .title {
+      th {
+        background-color: #ffe0ce;
+        color: var(--primary-color);
+        text-align: center;
+      }
+    }
+
+    .icon {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      .update {
+        color: blue;
+        cursor: pointer;
+      }
+
+      .un-hidden,
+      .hidden {
+        color: var(--primary-color);
+        cursor: pointer;
+      }
+
+      .delete {
+        color: red;
+        cursor: pointer;
+      }
+    }
+  }
+}

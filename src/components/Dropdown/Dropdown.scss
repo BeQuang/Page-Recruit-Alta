@@ -3,6 +3,26 @@
   position: relative;
   cursor: pointer;
 
+  .search-input {
+    background-color: transparent; /* Nền trong suốt */
+    border: 1px solid #ccc; /* Đường viền màu xám mờ */
+    padding: 8px;
+    width: 100%;
+    color: #333; /* Màu chữ tối */
+    font-size: 14px;
+    border-radius: 8px;
+
+    /* Thêm hiệu ứng khi focus */
+    &:focus {
+      outline: none; /* Tắt viền focus mặc định */
+      border-color: var(--primary-color); /* Thay đổi màu viền khi focus */
+    }
+  }
+
+  .search-input::placeholder {
+    color: #aaa; /* Màu chữ placeholder */
+  }
+
   .search {
     position: relative;
     background: white;

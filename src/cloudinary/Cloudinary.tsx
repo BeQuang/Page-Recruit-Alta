@@ -21,7 +21,12 @@ export const uploadFileToCloudinary = async (file: File) => {
     console.log("File uploaded successfully: ", fileURL);
     return fileURL;
   } catch (error) {
-    console.error("Error uploading file: ", error);
+    // In chi tiết lỗi từ Cloudinary để xác định nguyên nhân
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Error uploading file: ", error.response.data);
+    } else {
+      console.error("Unexpected error: ", error);
+    }
     throw new Error("File upload failed");
   }
 };

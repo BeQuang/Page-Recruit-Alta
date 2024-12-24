@@ -63,7 +63,9 @@ function JD() {
           <Dropdown
             value={areasExpertise}
             listOptions={listAreasExpertises}
-            setType={setAreasExpertise}
+            setType={(value: string | string[]) =>
+              setAreasExpertise(value as string)
+            }
             title="Chọn lĩnh vực chuyên môn"
           />
         </div>
@@ -71,7 +73,7 @@ function JD() {
           <Dropdown
             value={company}
             listOptions={listCompanys}
-            setType={setCompany}
+            setType={(value: string | string[]) => setCompany(value as string)}
             title="Chọn công ty"
           />
         </div>

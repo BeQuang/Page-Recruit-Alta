@@ -49,7 +49,7 @@ function ChoiceContest() {
           <Dropdown
             value={type}
             listOptions={listOptions}
-            setType={setType}
+            setType={(value: string | string[]) => setType(value as string)}
             size="large"
             title="Chọn môn thi"
           />

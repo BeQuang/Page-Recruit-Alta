@@ -10,38 +10,61 @@ interface Option {
 interface DropdownProps {
   value?: string;
   listOptions: Option[];
-  setType: (value: string) => void;
+  setType: (value: string | string[]) => void;
   size?: string;
   title?: string;
+  multiple?: boolean;
 }
 
-function Dropdown({ value, listOptions, setType, size, title }: DropdownProps) {
+function Dropdown({
+  value,
+  listOptions,
+  setType,
+  size,
+  title = "Select...", // Đặt giá trị mặc định cho title
+  multiple = false,
+}: DropdownProps) {
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  const [option, setOption] = useState<string>("");
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]); // Luôn khởi tạo mảng rỗng
+  const [searchQuery, setSearchQuery] = useState<string>(""); // Tìm kiếm theo chuỗi
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleChoiceOption = (item: Option) => {
-    setIsFocus(false);
-    setOption(item.text);
-    setType(item.text);
+    if (multiple) {
+      const isSelected = selectedOptions.includes(item.text);
+      const newSelectedOptions = isSelected
+        ? selectedOptions.filter((option) => option !== item.text)
+        : [...selectedOptions, item.text];
+
+      setSelectedOptions(newSelectedOptions);
+      setType(newSelectedOptions);
+    } else {
+      setIsFocus(false);
+      setSelectedOptions([item.text]);
+      setType(item.text);
+    }
   };
 
-  // Xử lý click ra ngoài
   const handleClickOutside = (event: MouseEvent) => {
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as Node)
     ) {
-      setIsFocus(false); // Đóng dropdown khi click ra ngoài
+      setIsFocus(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside); // Lắng nghe sự kiện
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside); // Xóa sự kiện khi component unmount
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Lọc các option dựa trên từ khóa tìm kiếm
+  const filteredOptions = listOptions.filter((option) =>
+    option.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="dropdown-container" ref={dropdownRef}>
@@ -52,7 +75,12 @@ function Dropdown({ value, listOptions, setType, size, title }: DropdownProps) {
         onClick={() => setIsFocus(!isFocus)}
       >
         <p className="title">
-          {option.trim() === "" || value === "" ? title : option}
+          {selectedOptions.length === 0 ||
+          (multiple && selectedOptions.every((opt) => opt === ""))
+            ? title
+            : multiple
+            ? selectedOptions.join(", ")
+            : selectedOptions[0]}
         </p>
         <div className={!isFocus ? "icon-down icon" : "icon-up icon"}>
           <IoMdArrowDropdown />
@@ -60,18 +88,34 @@ function Dropdown({ value, listOptions, setType, size, title }: DropdownProps) {
       </div>
       {isFocus && (
         <div className="content mt-2">
-          {listOptions.map((item, index) => (
-            <div
-              key={index}
-              className="item d-flex justify-content-between align-items-center"
-              onClick={() => handleChoiceOption(item)}
-            >
-              <span>{item.text}</span>
-              <div className="icon-check">
-                <IoCheckmark />
+          {/* Thêm ô tìm kiếm */}
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {filteredOptions.length === 0 ? (
+            <div className="no-results">No results found</div>
+          ) : (
+            filteredOptions.map((item, index) => (
+              <div
+                key={index}
+                className={`item d-flex justify-content-between align-items-center ${
+                  selectedOptions.includes(item.text) ? "selected" : ""
+                }`}
+                onClick={() => handleChoiceOption(item)}
+              >
+                <span>{item.text}</span>
+                {selectedOptions.includes(item.text) && (
+                  <div className="icon-check">
+                    <IoCheckmark />
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       )}
     </div>

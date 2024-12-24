@@ -2,8 +2,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { IoClose } from "react-icons/io5";
 import "./Modal.scss";
-import notice1 from "../assets/images/notice1.svg";
-import notice2 from "../assets/images/notice2.svg";
+import notice1 from "../../assets/images/notice1.svg";
+import notice2 from "../../assets/images/notice2.svg";
 
 interface ModalRegisterSuccessProps {
   show: boolean;
