@@ -1,4 +1,10 @@
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { uploadFileToCloudinary } from "../cloudinary/Cloudinary";
 import { firestore } from "./userController";
 import axios from "axios";
@@ -51,6 +57,7 @@ export const createJobData = async (
       fileURL, // URL của file đã upload
       logoURL, // URL của logo đã upload
       createdAt: new Date(), // Thời gian tạo
+      isActive: true,
     };
 
     console.log("Job data to save:", jobData);
@@ -114,5 +121,35 @@ export const updateJobData = async (
     }
 
     throw new Error("Failed to update job data");
+  }
+};
+
+export const updateJobIsActive = async (id: string, isActive: boolean) => {
+  try {
+    // Lấy tham chiếu đến document của job
+    const jobDocRef = doc(firestore, "job", id);
+
+    // Cập nhật trường isActive
+    await updateDoc(jobDocRef, { isActive });
+
+    console.log(`Job with ID: ${id} updated isActive to: ${isActive}`);
+  } catch (error) {
+    console.error("Error updating isActive:", error);
+    throw new Error("Failed to update isActive");
+  }
+};
+
+export const deleteJobData = async (id: string) => {
+  try {
+    // Tham chiếu đến document cần xóa
+    const jobDocRef = doc(firestore, "job", id);
+
+    // Thực hiện xóa document
+    await deleteDoc(jobDocRef);
+
+    console.log(`Job with ID: ${id} has been deleted successfully`);
+  } catch (error) {
+    console.error("Error deleting job data:", error);
+    throw new Error("Failed to delete job data");
   }
 };

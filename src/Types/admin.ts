@@ -8,4 +8,5 @@ export interface JobAdmin {
   phone: string;
   link: string;
   country: string[];
+  isActive?: boolean;
 }

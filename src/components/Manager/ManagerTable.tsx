@@ -1,7 +1,79 @@
 import React from "react";
+import Table from "react-bootstrap/Table";
+import { HiOutlinePencilAlt } from "react-icons/hi";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { JobAdmin } from "../../Types/admin";
 
-function ManagerTable() {
-  return <div></div>;
+interface ManagerTableProps {
+  jobs: JobAdmin[];
+  offset: number;
+  onUpdate: (job: JobAdmin) => void;
+  onIsActive: (job: JobAdmin) => void;
+  onDelete: (job: JobAdmin) => void;
 }
+
+const ManagerTable = ({
+  jobs,
+  offset,
+  onUpdate,
+  onIsActive,
+  onDelete,
+}: ManagerTableProps) => {
+  return (
+    <Table bordered hover>
+      <thead>
+        <tr className="title">
+          <th>ID</th>
+          <th>Tên công việc</th>
+          <th>Tên công ty</th>
+          <th>Nơi làm việc</th>
+          <th>Mô tả</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        {jobs.length > 0 ? (
+          jobs.map((job, index) => (
+            <tr key={job.id}>
+              <td>{offset + index + 1}</td>
+              <td>{job.work}</td>
+              <td>{job.company}</td>
+              <td>{job.country.join(", ")}</td>
+              <td>{job.request}</td>
+              <td className="icon">
+                <HiOutlinePencilAlt
+                  className="update"
+                  onClick={() => onUpdate(job)}
+                />
+                {job.isActive ? (
+                  <BsEye
+                    className="un-hidden"
+                    onClick={() => onIsActive(job)}
+                  />
+                ) : (
+                  <BsEyeSlash
+                    className="un-hidden"
+                    onClick={() => onIsActive(job)}
+                  />
+                )}
+                <FaRegTrashAlt
+                  className="delete"
+                  onClick={() => onDelete(job)}
+                />
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={6} className="text-center">
+              Không có dữ liệu
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </Table>
+  );
+};
 
 export default ManagerTable;

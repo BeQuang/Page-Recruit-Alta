@@ -3,7 +3,7 @@ import {
   fetchAllAreasExpertise,
   fetchAllCompany,
 } from "../../firebase/listDropdownController";
-import { fetchAllJobs } from "../../firebase/jdController"; // Import API lấy công việc
+import { fetchAllJobsbyActive } from "../../firebase/jdController"; // Import API lấy công việc
 import { JobItem as JobList } from "../../Types/job";
 
 export const useFetchDataListJD = ({
@@ -46,7 +46,7 @@ export function useJobSearch(
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchAllJobs(); // Gọi API lấy dữ liệu
+        const response = await fetchAllJobsbyActive(); // Gọi API lấy dữ liệu
 
         // Lọc công việc dựa trên các điều kiện
         const filteredJobs = response.filter((job) => {

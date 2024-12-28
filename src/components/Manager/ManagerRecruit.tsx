@@ -1,19 +1,22 @@
-import { GoPlus } from "react-icons/go";
-import "./Manager.scss";
-import Table from "react-bootstrap/Table";
-import { HiOutlinePencilAlt } from "react-icons/hi";
-import { BsEye } from "react-icons/bs";
-import { FaRegTrashAlt } from "react-icons/fa";
-import ModalAdmin from "../Modal/ModalAdmin";
 import { useEffect, useState } from "react";
+import { GoPlus } from "react-icons/go";
+import ReactPaginate from "react-paginate";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import ModalAdmin from "../Modal/ModalAdmin";
+import ModalConfirm from "../Modal/ModalConfirm";
+import ManagerTable from "./ManagerTable"; // Import ManagerTable
 import { fetchAllJobs } from "../../firebase/jdController";
 import { JobAdmin } from "../../Types/admin";
+import "./Manager.scss";
 
 function ManagerRecruit() {
   const [isModalAdmin, setIsModalAdmin] = useState(false);
+  const [isModalConfirm, setIsModalConfirm] = useState(false);
   const [jobs, setJobs] = useState<JobAdmin[]>([]);
   const [currentJob, setCurrentJob] = useState<JobAdmin | null>(null);
   const [type, setType] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(0); // Trang hiện tại
+  const itemsPerPage = 10; // Số phần tử mỗi trang
 
   useEffect(() => {
     fetchJobs();
@@ -22,11 +25,18 @@ function ManagerRecruit() {
   const fetchJobs = async () => {
     try {
       const data = await fetchAllJobs();
-      setJobs(data); // Không còn lỗi TS2345
+      setJobs(data);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu jobs:", error);
     }
   };
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+  };
+
+  const offset = currentPage * itemsPerPage;
+  const currentJobs = jobs.slice(offset, offset + itemsPerPage); // Lấy phần tử hiển thị cho trang hiện tại
 
   const handleOpenModalAdmin = () => {
     setIsModalAdmin(true);
@@ -38,6 +48,18 @@ function ManagerRecruit() {
     setIsModalAdmin(true);
     setCurrentJob(job);
     setType("UPDATE");
+  };
+
+  const handleIsActive = (job: JobAdmin) => {
+    setIsModalConfirm(true);
+    setCurrentJob(job);
+    setType("ISACTIVE");
+  };
+
+  const handleDelete = (job: JobAdmin) => {
+    setIsModalConfirm(true);
+    setCurrentJob(job);
+    setType("DELETE");
   };
 
   return (
@@ -52,45 +74,33 @@ function ManagerRecruit() {
         </button>
 
         <div className="table">
-          <Table bordered hover>
-            <thead>
-              <tr className="title">
-                <th>ID</th>
-                <th>Tên công việc</th>
-                <th>Tên công ty</th>
-                <th>Nơi làm việc</th>
-                <th>Mô tả</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {jobs.length > 0 ? (
-                jobs.map((job, index) => (
-                  <tr key={job.id}>
-                    <td>{index + 1}</td>
-                    <td>{job.work}</td>
-                    <td>{job.company}</td>
-                    <td>{job.country.join(", ")}</td>
-                    <td>{job.request}</td>
-                    <td className="icon">
-                      <HiOutlinePencilAlt
-                        className="update"
-                        onClick={() => handleUpdateAdmin(job)}
-                      />
-                      <BsEye className="un-hidden" />
-                      <FaRegTrashAlt className="delete" />
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="text-center">
-                    Không có dữ liệu
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
+          {/* Sử dụng ManagerTable */}
+          <ManagerTable
+            jobs={currentJobs}
+            offset={offset}
+            onUpdate={handleUpdateAdmin}
+            onIsActive={handleIsActive}
+            onDelete={handleDelete}
+          />
+        </div>
+
+        {/* Phân trang */}
+        <div className="pagination-container">
+          <ReactPaginate
+            previousLabel={<GrFormPrevious />}
+            nextLabel={<GrFormNext />}
+            breakLabel={"..."}
+            pageCount={Math.ceil(jobs.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item previous"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item next"}
+            nextLinkClassName={"page-link"}
+            disabledClassName={"disabled"}
+          />
         </div>
       </div>
 
@@ -99,6 +109,14 @@ function ManagerRecruit() {
         setShow={setIsModalAdmin}
         type={type}
         job={currentJob}
+        onJobUpdated={fetchJobs}
+      />
+      <ModalConfirm
+        show={isModalConfirm}
+        setShow={setIsModalConfirm}
+        type={type}
+        job={currentJob}
+        setJob={setCurrentJob}
         onJobUpdated={fetchJobs}
       />
     </>
