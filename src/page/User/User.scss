@@ -1,7 +1,9 @@
 .user-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
 
   .contest-container {
     background-color: white;
@@ -108,16 +110,34 @@
   }
 
   .body-contest-container {
-    height: 84%;
+    min-height: 80vh;
   }
 
   .footer-contest-container {
     background-color: white;
-    min-height: 6%;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-color);
     font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .action {
+    display: none; /* Ẩn action trên mobile */
+  }
+
+  .imageNTT {
+    width: 80% !important;
+  }
+
+  .btn-toggle {
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
   }
 }

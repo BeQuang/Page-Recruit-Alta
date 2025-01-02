@@ -11,6 +11,10 @@
       width: 50%;
       border-radius: 0.375rem;
 
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+
       .form-check-input {
         border: 1px solid var(--primary-color) !important;
       }
@@ -55,6 +59,10 @@
 
 .text-answer-container {
   width: 50%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   .text {
     width: 100%;

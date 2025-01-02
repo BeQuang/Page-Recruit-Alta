@@ -8,7 +8,6 @@
     border-radius: 8px;
 
     .form-icon {
-      width: 33%;
       position: relative;
 
       .icon {
@@ -35,7 +34,7 @@
   }
 
   .title-body {
-    font-size: 1.75rem;
+    font-size: 1rem;
     text-transform: uppercase;
     padding: 20px 0;
     display: flex;
@@ -43,6 +42,10 @@
     justify-content: center;
     align-items: center;
     font-weight: 600;
+
+    @media (min-width: 768px) {
+      font-size: 1.75rem;
+    }
 
     .focus {
       color: var(--primary-color);
@@ -58,7 +61,12 @@
       background-color: white;
       padding: 8px;
       border-radius: 8px;
-      width: calc((100% - 28px) / 3);
+      width: 100%;
+
+      @media (min-width: 768px) {
+        width: calc((100% - 28px) / 3);
+        margin-bottom: 0;
+      }
 
       .company {
         display: flex;
@@ -140,6 +148,18 @@
     .text {
       flex-direction: column;
       padding-bottom: 24px;
+
+      span {
+        text-align: center;
+      }
+    }
+  }
+
+  .imageJD {
+    width: 90%;
+
+    @media (min-width: 768px) {
+      width: auto;
     }
   }
 }

@@ -126,6 +126,7 @@ function ModalAdmin({
             onChange={(e) => setName(e.target.value)}
             error={errorInput === 1}
             disabled={type === "UPDATE"}
+            className={"mobile-pb"}
           />
           <FormInput
             id="email"
@@ -143,6 +144,7 @@ function ModalAdmin({
             value={work}
             onChange={(e) => setWork(e.target.value)}
             error={errorInput === 3}
+            className={"mobile-pb"}
           />
           <FormInput
             id="description"
@@ -153,7 +155,7 @@ function ModalAdmin({
           />
         </div>
         <div className="row mb-3">
-          <div className="col-6">
+          <div className="col-12 col-md-6 mobile-pb">
             <Form.Label>
               Nơi làm việc<span className="text-danger">*</span>
             </Form.Label>
@@ -192,6 +194,7 @@ function ModalAdmin({
               document.getElementById("inputFile")?.click()
             }
             error={errorInput === 7 && type !== "UPDATE"}
+            className={"mobile-pb"}
           />
           <FileInput
             id="inputLogo"

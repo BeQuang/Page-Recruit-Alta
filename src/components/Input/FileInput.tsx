@@ -11,6 +11,7 @@ interface FileInputProps {
   triggerFileInput: () => void;
   error: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 const FileInput: React.FC<FileInputProps> = ({
@@ -21,8 +22,9 @@ const FileInput: React.FC<FileInputProps> = ({
   triggerFileInput,
   error,
   disabled = false,
+  className,
 }) => (
-  <div className="col-6">
+  <div className={`col-12 col-md-6 ${className}`}>
     <Form.Label htmlFor={id}>
       {label}
       <span className="text-danger">*</span>

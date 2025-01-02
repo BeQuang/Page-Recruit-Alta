@@ -106,7 +106,7 @@ function Contest() {
               {title || "Không có loại đề thi được chọn"}
             </h3>
             <div className="information">
-              <div className="total">
+              <div className="total d-none d-md-block">
                 Tổng câu hỏi: <span>{dataContest?.totalQuestions}</span>
               </div>
               <div className="finish">

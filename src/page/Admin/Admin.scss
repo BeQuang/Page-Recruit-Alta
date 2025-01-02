@@ -1,7 +1,9 @@
 .admin-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
 
   .manager-container {
     background-color: white;
@@ -11,12 +13,12 @@
   }
 
   .body-manager-container {
-    height: 84%;
+    min-height: 80vh;
   }
 
   .footer-manager-container {
     background-color: white;
-    min-height: 6%;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;

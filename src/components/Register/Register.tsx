@@ -129,7 +129,7 @@ function Register() {
 
           {/* Phần chọn file */}
           <div className="row mb-3">
-            <div className="col-2">
+            <div className="col-8 col-md-2">
               <Form.Label htmlFor="inputFile">
                 Chọn file<span className="text-danger">*</span>
               </Form.Label>
@@ -166,7 +166,7 @@ function Register() {
 
           {/* Phần thông tin người dùng */}
           <div className="row mb-3">
-            <div className="col-6">
+            <div className="col-12 col-md-6 mobile-pb">
               <Form.Group controlId="name">
                 <Form.Label>
                   Họ và tên<span className="text-danger">*</span>
@@ -180,7 +180,7 @@ function Register() {
                 />
               </Form.Group>
             </div>
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <Form.Group controlId="email">
                 <Form.Label>
                   Email<span className="text-danger">*</span>
@@ -206,7 +206,7 @@ function Register() {
 
           {/* Phần chọn ngày */}
           <div className="row mb-3">
-            <div className="col-6">
+            <div className="col-12 col-md-6 mobile-pb">
               <Form.Group>
                 <Form.Label>
                   Ngày sinh<span className="text-danger">*</span>
@@ -235,7 +235,7 @@ function Register() {
                 </div>
               ) : null}
             </div>
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <Form.Group controlId="phone">
                 <Form.Label>
                   Số điện thoại<span className="text-danger">*</span>
@@ -253,7 +253,7 @@ function Register() {
 
           {/* Phần thông tin vị trí ứng tuyển */}
           <div className="row mb-3">
-            <div className="col-6">
+            <div className="col-12 col-md-6 mobile-pb">
               <Form.Group controlId="location">
                 <Form.Label>
                   Vị trí ứng tuyển<span className="text-danger">*</span>
@@ -276,7 +276,7 @@ function Register() {
                 </div>
               ) : null}
             </div>
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <Form.Group controlId="shape">
                 <Form.Label>
                   Hình thức đăng ký<span className="text-danger">*</span>
@@ -303,7 +303,7 @@ function Register() {
 
           {/* Phần thông tin */}
           <div className="row mb-3">
-            <div className="col-6">
+            <div className="col-12 col-md-6 mobile-pb">
               <Form.Group controlId="implement">
                 <Form.Label>
                   Hình thức thực hiện<span className="text-danger">*</span>
@@ -326,7 +326,7 @@ function Register() {
                 </div>
               ) : null}
             </div>
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <Form.Group controlId="known">
                 <Form.Label>
                   Bạn biết đến Alta Group từ đâu?
@@ -354,7 +354,7 @@ function Register() {
 
           {/* Phần thông tin */}
           <div className="row mb-3">
-            <div className="col-6">
+            <div className="col-12 col-md-6 mobile-pb">
               <Form.Group controlId="school">
                 <Form.Label>
                   Trường đang học<span className="text-danger">*</span>
@@ -368,7 +368,7 @@ function Register() {
                 />
               </Form.Group>
             </div>
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <Form.Group controlId="specialized">
                 <Form.Label>
                   Chuyên ngành<span className="text-danger">*</span>

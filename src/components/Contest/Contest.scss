@@ -43,11 +43,33 @@
       }
     }
   }
+
+  @media (max-width: 768px) {
+    .option {
+      flex-direction: column;
+      width: 90%;
+      background-color: #f1f3f5;
+
+      .dropdown {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+
+      .btn-create {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
 }
 
 .contest-child-container {
   background-color: #f1f3f5 !important;
   margin-top: 48px;
+
+  @media (max-width: 768px) {
+    margin: 32px 0 24px;
+  }
 
   .information {
     display: flex;

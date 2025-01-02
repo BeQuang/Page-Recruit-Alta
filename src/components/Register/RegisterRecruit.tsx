@@ -74,7 +74,7 @@ function RegisterRecruit() {
 
         {/* Phần thông tin */}
         <div className="row mb-3">
-          <div className="col-6">
+          <div className="col-12 col-md-6 mobile-pb">
             <Form.Group controlId="email">
               <Form.Label>
                 Email liên hệ<span className="text-danger">*</span>
@@ -96,7 +96,7 @@ function RegisterRecruit() {
               ) : null}
             </Form.Group>
           </div>
-          <div className="col-6">
+          <div className="col-12 col-md-6">
             <Form.Group controlId="address">
               <Form.Label>
                 Địa chỉ công ty<span className="text-danger">*</span>
@@ -114,7 +114,7 @@ function RegisterRecruit() {
 
         {/* Phần thông tin */}
         <div className="row mb-3">
-          <div className="col-6">
+          <div className="col-12 col-md-6 mobile-pb">
             <Form.Group controlId="business">
               <Form.Label>
                 Tên doanh nghiệp<span className="text-danger">*</span>
@@ -128,7 +128,7 @@ function RegisterRecruit() {
               />
             </Form.Group>
           </div>
-          <div className="col-6">
+          <div className="col-12 col-md-6">
             <Form.Group controlId="manager">
               <Form.Label>
                 Người quản lý<span className="text-danger">*</span>
@@ -146,7 +146,7 @@ function RegisterRecruit() {
 
         {/* Phần thông tin */}
         <div className="row mb-3">
-          <div className="col-6">
+          <div className="col-12 col-md-6 mobile-pb">
             <Form.Group controlId="phone-company">
               <Form.Label>
                 Điện thoại công ty<span className="text-danger">*</span>
@@ -160,7 +160,7 @@ function RegisterRecruit() {
               />
             </Form.Group>
           </div>
-          <div className="col-6">
+          <div className="col-12 col-md-6">
             <Form.Group controlId="phone-manager">
               <Form.Label>
                 Điện thoại người quản lý

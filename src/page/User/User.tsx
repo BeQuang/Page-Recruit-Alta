@@ -13,6 +13,7 @@ import { auth } from "../../firebase/firebase";
 
 function User() {
   const [isActionActive, setIsActionActive] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // Lấy dữ liệu user từ Redux Store
@@ -39,6 +40,9 @@ function User() {
     }
     setIsActionActive(false);
     navigate("/user");
+    if (isMobileMenuOpen) {
+      handleToggleMobileMenu();
+    }
   };
 
   const handleActionProcess = () => {
@@ -47,11 +51,18 @@ function User() {
     }
     setIsActionActive(true);
     navigate("/user/process");
+    if (isMobileMenuOpen) {
+      handleToggleMobileMenu();
+    }
   };
 
   const handleLogout = async () => {
     await auth.signOut();
     navigate("/");
+  };
+
+  const handleToggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
@@ -60,11 +71,10 @@ function User() {
         <div className="container">
           <div className="header d-flex justify-content-between align-items-start">
             <img src={logo5NTT} alt="NTT" className="imageNTT col-6" />
-            <div className="action col-6">
+            <div className="action col-6 d-none d-md-flex">
               <div
                 className={!isActionActive ? "item active" : "item"}
                 onClick={() => handleActionContest()}
-                // Vô hiệu hóa khi có ít nhất một contest có timeCurrent !== 0
                 style={{
                   pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
                 }}
@@ -82,7 +92,6 @@ function User() {
               <div
                 className={isActionActive ? "item active" : "item"}
                 onClick={() => handleActionProcess()}
-                // Vô hiệu hóa khi có ít nhất một contest có timeCurrent !== 0
                 style={{
                   pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
                 }}
@@ -98,7 +107,7 @@ function User() {
                 </div>
               </div>
               <div
-                className="avatar" // Vô hiệu hóa khi có ít nhất một contest có timeCurrent !== 0
+                className="avatar"
                 style={{
                   pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
                 }}
@@ -114,9 +123,72 @@ function User() {
                 </div>
               </div>
             </div>
+            {/* Nút toggle cho mobile */}
+            <button
+              className="btn-toggle d-md-none"
+              onClick={handleToggleMobileMenu}
+            >
+              &#9776;
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu-overlay" onClick={handleToggleMobileMenu}>
+          <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+            <button className="btn-close" onClick={handleToggleMobileMenu}>
+              &times;
+            </button>
+            <div className="mobile-action">
+              <div
+                className={!isActionActive ? "item active" : "item"}
+                onClick={() => handleActionContest()}
+                style={{
+                  pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
+                }}
+              >
+                <div className="title">
+                  <div className="icon">
+                    <RiUserSearchLine />
+                  </div>
+                  <span className="text">Thi trắc nghiệm</span>
+                </div>
+                <div className="text-center fs-10 point">
+                  <FaCircle />
+                </div>
+              </div>
+              <div
+                className={isActionActive ? "item active" : "item"}
+                onClick={() => handleActionProcess()}
+                style={{
+                  pointerEvents: isAnyTimeCurrentNotZero ? "none" : "auto",
+                }}
+              >
+                <div className="title">
+                  <div className="icon">
+                    <RiBook2Line />
+                  </div>
+                  <span className="text">Tiến trình học tập</span>
+                </div>
+                <div className="text-center fs-10 point">
+                  <FaCircle />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div className="mobile-user">
+              <div className="avatar d-flex align-items-center">
+                <span className="name">{user?.user?.name}</span>
+                <button className="btn-logout" onClick={handleLogout}>
+                  Đăng xuất
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="body-contest-container">
         <div className="container">

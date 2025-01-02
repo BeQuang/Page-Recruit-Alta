@@ -9,6 +9,7 @@ interface FormInputProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   error: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -18,8 +19,9 @@ const FormInput: React.FC<FormInputProps> = ({
   onChange,
   error,
   disabled = false,
+  className,
 }) => (
-  <div className="col-6">
+  <div className={`col-12 col-md-6 ${className}`}>
     <Form.Group controlId={id}>
       <Form.Label>
         {label}

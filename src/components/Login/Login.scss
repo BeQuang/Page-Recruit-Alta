@@ -16,6 +16,7 @@
 
   .body {
     padding-top: var(--padding-layout);
+    margin-bottom: 32px;
 
     .child-outlet {
       min-height: 50vh;
@@ -25,19 +26,27 @@
   }
 
   .back-home {
-    color: var(--primary-color);
+    width: 100%;
     display: flex;
+    justify-content: center;
+
+    a {
+      display: flex;
+      color: var(--primary-color) !important;
+    }
 
     span {
-      width: 80%;
       text-align: end;
-      padding-top: 32px;
     }
   }
 }
 
 .container-login-form {
-  width: 80%;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 80%;
+  }
 
   .title {
     color: var(--primary-color);

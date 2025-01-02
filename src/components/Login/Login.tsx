@@ -9,23 +9,25 @@ function Login() {
     <div className="login-container">
       <div className="container">
         <div className="header d-flex justify-content-between align-items-start">
-          <img src={logo5NTT} alt="NTT" className="imageNTT col-6" />
-          <h3 className="title col-6">
+          <img src={logo5NTT} alt="NTT" className="col-8 col-md-4" />
+          <h3 className="title col-6 d-none d-md-block">
             <span>Hệ thống tuyển dụng</span> <br /> và quản lý sinh viên thực
             tập
           </h3>
         </div>
 
         <div className="body d-flex align-items-center">
-          <div className="col-6 child-outlet">
+          <div className="col-12 col-md-6 child-outlet">
             <Outlet />
           </div>
-          <img src={logoLogin} alt="logo" className="col-6" />
+          <img src={logoLogin} alt="logo" className="col-6 d-none d-md-block" />
         </div>
 
-        <Link to="/" className="back-home col-6">
-          <span>Back home</span>
-        </Link>
+        <div className="back-home">
+          <Link to="/">
+            <span>Back home</span>
+          </Link>
+        </div>
       </div>
     </div>
   );

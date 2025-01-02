@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { FaCircle } from "react-icons/fa";
+import { FaCircle, FaBars } from "react-icons/fa";
 import { RiUserSearchLine, RiBook2Line } from "react-icons/ri";
 import noImage from "../../assets/images/noImage.png";
 import logo5NTT from "../../assets/images/Logo-5NTT.svg";
@@ -34,6 +33,7 @@ const HeaderComponent = ({
   isLoggedIn,
 }: HeaderComponentProps) => {
   const [listText, setListText] = useState<string[]>([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     switch (type) {
@@ -60,14 +60,38 @@ const HeaderComponent = ({
     }
   }, [type, setIsActionActive]);
 
-  return (
-    <div className="header-container d-flex justify-content-between align-items-start">
-      <img src={logo5NTT} alt="NTT" className="imageNTT col-6" />
+  const handleCloseMenu = () => setIsMobileMenuOpen(false);
 
-      <div className={`action col-6 ${type === "ADMIN" ? "admin" : ""}`}>
+  const handleMenuClick = (action: (() => void) | undefined) => {
+    if (action) action();
+    handleCloseMenu();
+  };
+
+  return (
+    <div className="header-container">
+      {/* Logo */}
+      <div className="d-flex justify-content-between align-items-center w-100">
+        <img src={logo5NTT} alt="NTT" className="w-80" />
+        {/* Nút toggle cho mobile */}
+        <button
+          className="btn btn-toggle d-md-none"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <FaBars />
+        </button>
+      </div>
+
+      {/* Action menu cho PC */}
+      <div
+        className={`action col-md-6 ${
+          type === "ADMIN" ? "admin" : ""
+        } d-none d-md-flex`}
+      >
         <div
           className={!isActionActive ? "item active" : "item"}
-          onClick={handleActionContest || handleActionRequest}
+          onClick={() =>
+            handleMenuClick(handleActionContest || handleActionRequest)
+          }
         >
           <div className="title">
             <div className="icon">
@@ -83,7 +107,9 @@ const HeaderComponent = ({
         {(type === "RECRUIT" || type === "HOME") && (
           <div
             className={isActionActive ? "item active" : "item"}
-            onClick={handleActionProcess || handleActionInternShip}
+            onClick={() =>
+              handleMenuClick(handleActionProcess || handleActionInternShip)
+            }
           >
             <div className="title">
               <div className="icon">
@@ -117,6 +143,74 @@ const HeaderComponent = ({
           </div>
         )}
       </div>
+
+      {/* Mobile menu */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu-overlay" onClick={handleCloseMenu}>
+          <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+            <button className="btn-close" onClick={handleCloseMenu}>
+              &times;
+            </button>
+
+            <div className="mobile-action">
+              <div
+                className={!isActionActive ? "item active" : "item"}
+                onClick={() =>
+                  handleMenuClick(handleActionContest || handleActionRequest)
+                }
+              >
+                <div className="title">
+                  <div className="icon">
+                    <RiUserSearchLine />
+                  </div>
+                  <span className="text">{listText[0] || "Hành động 1"}</span>
+                </div>
+                <div className="text-center fs-10 point">
+                  <FaCircle />
+                </div>
+              </div>
+
+              {(type === "RECRUIT" || type === "HOME") && (
+                <div
+                  className={isActionActive ? "item active" : "item"}
+                  onClick={() =>
+                    handleMenuClick(
+                      handleActionProcess || handleActionInternShip
+                    )
+                  }
+                >
+                  <div className="title">
+                    <div className="icon">
+                      <RiBook2Line />
+                    </div>
+                    <span className="text">{listText[1] || "Hành động 2"}</span>
+                  </div>
+                  <div className="text-center fs-10 point">
+                    <FaCircle />
+                  </div>
+                </div>
+              )}
+            </div>
+            <hr />
+            <div className="mobile-user">
+              {isLoggedIn ? (
+                <div className="avatar d-flex align-items-center">
+                  <span className="name">{user?.user?.name}</span>
+                  <button className="btn-logout" onClick={handleLogout}>
+                    Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <div className="d-flex justify-content-center">
+                  <button className="btn btn-login" onClick={handleLogout}>
+                    Đăng nhập
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

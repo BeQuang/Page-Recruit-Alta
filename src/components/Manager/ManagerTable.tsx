@@ -26,9 +26,9 @@ const ManagerTable = ({
         <tr className="title">
           <th>ID</th>
           <th>Tên công việc</th>
-          <th>Tên công ty</th>
-          <th>Nơi làm việc</th>
-          <th>Mô tả</th>
+          <th className="d-none d-md-block">Tên công ty</th>
+          <th className="d-none d-md-block">Nơi làm việc</th>
+          <th className="d-none d-md-block">Mô tả</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -38,9 +38,9 @@ const ManagerTable = ({
             <tr key={job.id}>
               <td>{offset + index + 1}</td>
               <td>{job.work}</td>
-              <td>{job.company}</td>
-              <td>{job.country.join(", ")}</td>
-              <td>{job.request}</td>
+              <td className="d-none d-md-block">{job.company}</td>
+              <td className="d-none d-md-block">{job.country.join(", ")}</td>
+              <td className="d-none d-md-block">{job.request}</td>
               <td className="icon">
                 <HiOutlinePencilAlt
                   className="update"

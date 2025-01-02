@@ -50,7 +50,7 @@ function JD() {
   return (
     <div className="job-container">
       <div className="search-container d-flex bg-white">
-        <div className="form-icon d-flex justify-content-center align-items-center">
+        <div className="form-icon d-flex justify-content-center align-items-center col-12 col-md-4">
           <IoMdSearch className="icon" />
           <Form.Control
             type="text"
@@ -59,7 +59,7 @@ function JD() {
             onChange={handleOnchangeTextSearch} // Cập nhật textSearcher khi thay đổi
           />
         </div>
-        <div className="drop-down">
+        <div className="drop-down d-none d-md-block">
           <Dropdown
             value={areasExpertise}
             listOptions={listAreasExpertises}
@@ -69,7 +69,7 @@ function JD() {
             title="Chọn lĩnh vực chuyên môn"
           />
         </div>
-        <div className="drop-down">
+        <div className="drop-down d-none d-md-block">
           <Dropdown
             value={company}
             listOptions={listCompanys}
@@ -123,7 +123,7 @@ function JD() {
             </span>
             <span>để tận dụng tối đa tìm kiếm của bạn.</span>
           </div>
-          <img src={imageJD} alt="JD" />
+          <img src={imageJD} alt="JD" className="imageJD" />
         </div>
       )}
     </div>
