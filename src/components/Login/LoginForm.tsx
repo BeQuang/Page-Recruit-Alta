@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ModalSuccess from "./ModalSuccess";
+import { useLoading } from "./ContextLoading";
 
 function LoginForm() {
   useEffect(() => {
@@ -29,6 +30,7 @@ function LoginForm() {
   }, []);
 
   const navigate = useNavigate();
+  const { setLoading } = useLoading();
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
@@ -69,6 +71,7 @@ function LoginForm() {
 
     if (checkValidInput && captchaValue) {
       setErrorInput(false);
+      setLoading(true);
 
       const res = await createOrUpdateUserWithAuth({
         email,
@@ -116,6 +119,8 @@ function LoginForm() {
           console.warn("Unhandled response EM:", res.EM);
           break;
       }
+
+      setLoading(false);
     } else {
       setErrorInput(true);
     }

@@ -6,6 +6,7 @@ import { saveBusinessDataToFirestore } from "../../firebase/recruitController";
 import { validateEmail, validRegisterBusiness } from "../Validate/Validate";
 import { CgDanger } from "react-icons/cg";
 import ModalRegisterSuccess from "../Modal/ModalRegisterSuccess";
+import { ThreeCircles } from "react-loader-spinner";
 
 function RegisterRecruit() {
   const [email, setEmail] = useState<string>("");
@@ -18,6 +19,8 @@ function RegisterRecruit() {
   const [errorInput, setErrorInput] = useState<number>(0);
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [isModalSuccess, setIsModalSuccess] = useState<boolean>(false);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const resetData = () => {
     setEmail("");
@@ -52,6 +55,8 @@ function RegisterRecruit() {
       return;
     }
 
+    setLoading(true);
+
     await saveBusinessDataToFirestore(
       email,
       address,
@@ -65,7 +70,26 @@ function RegisterRecruit() {
     setErrorEmail(false);
     setIsModalSuccess(true);
     resetData();
+
+    setLoading(false);
   };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <ThreeCircles
+          visible={true}
+          height="100"
+          width="100"
+          color="#f26d21"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+        <h1>Vui lòng chờ trong giây lát...</h1>
+      </div>
+    );
+  }
 
   return (
     <>

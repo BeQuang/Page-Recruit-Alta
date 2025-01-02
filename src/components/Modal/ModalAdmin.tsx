@@ -10,6 +10,7 @@ import { createJobData, updateJobData } from "../../firebase/adminController";
 import { JobAdmin } from "../../Types/admin";
 import ErrorInput from "../Input/ErrorInput"; // Import new ErrorText component
 import { Form } from "react-bootstrap";
+import { useLoading } from "../Login/ContextLoading";
 
 interface ModalAdminProps {
   show: boolean;
@@ -35,6 +36,8 @@ function ModalAdmin({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedLogo, setSelectedLogo] = useState<File | null>(null);
   const [errorInput, setErrorInput] = useState<number>(0);
+
+  const { setLoading } = useLoading();
 
   useEffect(() => {
     if (job) {
@@ -82,10 +85,17 @@ function ModalAdmin({
       selectedLogo
     );
 
+    console.log(checkValidInput);
+
     if (checkValidInput !== 0) {
-      setErrorInput(checkValidInput);
-      return;
+      if (checkValidInput !== 8 && type === "UPDATE") {
+        setErrorInput(checkValidInput);
+        return;
+      }
     }
+
+    setLoading(true);
+
     if (type === "CREATE") {
       await createJobData(
         name,
@@ -103,6 +113,8 @@ function ModalAdmin({
     await onJobUpdated();
     resetData();
     setShow(false);
+
+    setLoading(false);
   };
 
   return (
@@ -218,9 +230,14 @@ function ModalAdmin({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <button className="btn btn-confirm" onClick={handleConfirm}>
-          {type === "UPDATE" ? "Cập nhật" : "Xác nhận"}
-        </button>
+        <div className="d-flex">
+          <button onClick={handleClose} className="btn btn-closed">
+            Hủy
+          </button>
+          <button className="btn btn-confirm" onClick={handleConfirm}>
+            {type === "UPDATE" ? "Cập nhật" : "Xác nhận"}
+          </button>
+        </div>
       </Modal.Footer>
     </Modal>
   );

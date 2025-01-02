@@ -12,6 +12,7 @@ import { saveDataToFirestore } from "../../firebase/recruitController";
 import { validRegisterOnline } from "../Validate/Validate";
 import { CgDanger } from "react-icons/cg";
 import ModalRegisterSuccess from "../Modal/ModalRegisterSuccess";
+import { ThreeCircles } from "react-loader-spinner";
 
 function Register() {
   // Tạo các state để lưu trữ dữ liệu trả về
@@ -35,6 +36,8 @@ function Register() {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   // State cho các trường còn lại
   const [location, setLocation] = useState<string>("");
@@ -100,11 +103,15 @@ function Register() {
       return;
     }
 
+    setLoading(true);
+
     // Gọi hàm lưu dữ liệu
     await saveDataToFirestore(formData);
     setErrorInput(0);
     setIsModalSuccess(true);
     resetData();
+
+    setLoading(false);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,6 +127,23 @@ function Register() {
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date); // Cập nhật giá trị ngày
   };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <ThreeCircles
+          visible={true}
+          height="100"
+          width="100"
+          color="#f26d21"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+        <h1>Vui lòng chờ trong giây lát...</h1>
+      </div>
+    );
+  }
 
   return (
     <>

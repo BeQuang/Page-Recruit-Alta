@@ -103,6 +103,22 @@
       color: white;
     }
   }
+
+  .modal-footer {
+    .btn-closed {
+      min-width: 92px;
+      color: white;
+      background-color: #999898;
+      border: 1px solid #999898;
+      margin-right: 8px;
+
+      &:hover {
+        background-color: #ccc;
+        border-color: #ccc;
+        color: white;
+      }
+    }
+  }
 }
 
 .modal-confirm-container {

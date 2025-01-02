@@ -12,6 +12,7 @@ import { addReportingProcess } from "../../firebase/contestController";
 import { CgDanger } from "react-icons/cg";
 import { validProcess } from "../Validate/Validate";
 import { fetchAllInternshipGroup } from "../../firebase/listDropdownController";
+import { ThreeCircles } from "react-loader-spinner";
 
 function Process() {
   useEffect(() => {
@@ -37,8 +38,8 @@ function Process() {
   const [description, setDescription] = useState<string>("");
 
   const [isModalSuccess, setIsModalSuccess] = useState<boolean>(false);
-
   const [errorInput, setErrorInput] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const resetData = () => {
     setType("");
@@ -54,8 +55,10 @@ function Process() {
     const checkValidInput = validProcess({ type, link, description });
 
     if (checkValidInput) {
+      setLoading(true);
       await addReportingProcess(type, link, description);
       resetData();
+      setLoading(false);
     } else {
       setErrorInput(true);
       return;
@@ -63,6 +66,23 @@ function Process() {
 
     setIsModalSuccess(true);
   };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <ThreeCircles
+          visible={true}
+          height="100"
+          width="100"
+          color="#f26d21"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+        <h1>Vui lòng chờ trong giây lát...</h1>
+      </div>
+    );
+  }
 
   return (
     <>

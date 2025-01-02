@@ -8,6 +8,8 @@ import ManagerTable from "./ManagerTable"; // Import ManagerTable
 import { fetchAllJobs } from "../../firebase/jdController";
 import { JobAdmin } from "../../Types/admin";
 import "./Manager.scss";
+import { ThreeCircles } from "react-loader-spinner";
+import { LoadingProvider } from "../Login/ContextLoading";
 
 function ManagerRecruit() {
   const [isModalAdmin, setIsModalAdmin] = useState(false);
@@ -17,6 +19,8 @@ function ManagerRecruit() {
   const [type, setType] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(0); // Trang hiện tại
   const itemsPerPage = 10; // Số phần tử mỗi trang
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     fetchJobs();
@@ -62,8 +66,25 @@ function ManagerRecruit() {
     setType("DELETE");
   };
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <ThreeCircles
+          visible={true}
+          height="100"
+          width="100"
+          color="#f26d21"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+        <h1>Vui lòng chờ trong giây lát...</h1>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <LoadingProvider setLoading={setLoading}>
       <div className="manager-recruit-container">
         <button
           className="btn btn-add-item mb-3"
@@ -119,7 +140,7 @@ function ManagerRecruit() {
         setJob={setCurrentJob}
         onJobUpdated={fetchJobs}
       />
-    </>
+    </LoadingProvider>
   );
 }
 
