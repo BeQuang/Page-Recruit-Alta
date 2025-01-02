@@ -34,7 +34,7 @@ function LoginForm() {
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-  const [captchaValue, setCaptchaValue] = useState<boolean>(false);
+  const [captchaValue, setCaptchaValue] = useState<boolean>(true);
   const [errorInput, setErrorInput] = useState<boolean>(false);
   const [errorSelect, setErrorSelect] = useState<boolean>(false);
   const [textError, setTextError] = useState<string>("");
@@ -58,7 +58,7 @@ function LoginForm() {
     setPassword("");
     setType("");
     setRememberPass(false);
-    setCaptchaValue(false);
+    setCaptchaValue(true);
     setErrorInput(false);
 
     recaptchaRef.current?.reset();
